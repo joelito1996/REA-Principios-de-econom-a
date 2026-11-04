@@ -1,0 +1,1280 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio de Economía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<meta name="author" content="Joel Alexander Carvajal Solís">
+<meta name="description" content="Diez estaciones interactivas para aprender Principios de Economía con ejemplos de Tungurahua y del Ecuador: necesidades, FPP, factores, eficiencia, flujo circular, mercados, oferta y demanda, análisis marginal, optimización y PIB.">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Laboratorio de Economía",
+ "description": "Diez estaciones interactivas para aprender Principios de Economía con ejemplos de Tungurahua y del Ecuador: necesidades, FPP, factores, eficiencia, flujo circular, mercados, oferta y demanda, análisis marginal, optimización y PIB.",
+ "author": {
+  "@type": "Person",
+  "name": "Joel Alexander Carvajal Solís",
+  "affiliation": {
+   "@type": "CollegeOrUniversity",
+   "name": "Universidad Técnica de Ambato"
+  }
+ },
+ "inLanguage": "es",
+ "educationalLevel": "Educación superior, nivelación",
+ "learningResourceType": "Simulación interactiva",
+ "isAccessibleForFree": true,
+ "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+ "version": "1.0",
+ "dateCreated": "2026-10",
+ "keywords": [
+  "economía",
+  "nivelación",
+  "oferta y demanda",
+  "frontera de posibilidades de producción",
+  "Maslow",
+  "factores de producción",
+  "eficiencia",
+  "PIB",
+  "simulación"
+ ],
+ "teaches": "Principios de Economía"
+}
+</script>
+<style>
+:root{
+  --teal:#0E7C7B; --teal-d:#0A5B5A; --teal-l:#DDEFEE;
+  --amber:#E8A33D; --amber-d:#B9771A; --amber-l:#FBEFD9;
+  --coral:#E4675A; --coral-d:#B8463B; --coral-l:#FBE3E0;
+  --ink:#1E2A32; --ink-2:#4A5862; --line:#D5DEE2;
+  --paper:#F5F8F8; --card:#FFFFFF;
+  --ok:#2E8B57; --bad:#C0392B;
+  --radius-s:6px; --radius-m:12px;
+  --display:"Bricolage Grotesque", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0 0 .4em}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 .8em}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* Encabezado */
+header.top{background:var(--teal-d);color:#fff;padding:18px 0 16px}
+header.top .wrap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px}
+header.top .brand{font-family:var(--display);font-weight:800;font-size:1.35rem}
+header.top .meta{opacity:.85;font-size:.95rem}
+.progressbar{height:6px;background:rgba(255,255,255,.18);border-radius:3px;overflow:hidden;flex-basis:100%;margin-top:8px}
+.progressbar span{display:block;height:100%;width:0;background:var(--amber);transition:width .4s}
+
+/* Disposición */
+.layout{display:grid;grid-template-columns:230px 1fr;gap:28px;padding:24px 0 60px}
+nav.stations{position:sticky;top:16px;align-self:start}
+nav.stations ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+nav.stations button{width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:var(--radius-s);padding:9px 10px;color:var(--ink);display:flex;gap:10px;align-items:center}
+nav.stations button:hover{background:var(--teal-l)}
+nav.stations button[aria-current="true"]{background:var(--card);border-color:var(--line);font-weight:700}
+.dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;font-size:12px;color:#fff}
+.done .dot{background:var(--teal);border-color:var(--teal)}
+.done .dot::after{content:"✓"}
+.partial .dot{border-color:var(--amber)}
+
+main section{display:none}
+main section.active{display:block}
+.intro{max-width:70ch}
+.lede{font-size:1.08rem;color:var(--ink-2)}
+.unit-tag{display:inline-block;font-size:.85rem;color:var(--teal-d);background:var(--teal-l);border-radius:4px;padding:1px 8px;margin-bottom:10px}
+
+/* Panel de laboratorio */
+.lab{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-m);padding:18px;margin:18px 0}
+.controls{display:flex;flex-direction:column;gap:14px}
+.controls label{font-weight:700;font-size:.95rem;display:block;margin-bottom:4px}
+.controls input[type=range]{width:100%;accent-color:var(--teal)}
+.readout{background:var(--paper);border-radius:var(--radius-s);padding:10px 12px;font-size:.95rem}
+.readout b{font-family:var(--display);font-size:1.15rem}
+.chart svg{width:100%;height:auto;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:.92rem;color:var(--ink)}
+.chip[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d);font-weight:700}
+.chip.d[aria-pressed="true"]{border-color:var(--amber-d);background:var(--amber-l);color:#6b4510}
+.chip.s[aria-pressed="true"]{border-color:var(--coral-d);background:var(--coral-l);color:var(--coral-d)}
+.btn{border:none;border-radius:var(--radius-s);padding:10px 16px;font-weight:700;background:var(--teal);color:#fff}
+.btn:hover{background:var(--teal-d)}
+.btn.ghost{background:transparent;color:var(--teal-d);border:1.5px solid var(--teal)}
+.btn.ghost:hover{background:var(--teal-l)}
+small.note{color:var(--ink-2);font-size:.88rem}
+table.mini{border-collapse:collapse;width:100%;font-size:.92rem}
+table.mini th,table.mini td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:right}
+table.mini th:first-child,table.mini td:first-child{text-align:left}
+table.mini tr.on td{background:var(--teal-l)}
+table.mini tr.opt td{font-weight:700}
+
+/* Retos */
+.retos{margin-top:8px}
+.reto{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--amber);border-radius:var(--radius-s);padding:14px 16px;margin:12px 0}
+.reto p.q{font-weight:700;margin-bottom:10px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:var(--radius-s);padding:8px 12px;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:#E5F4EC}
+.opt.wrong{border-color:var(--bad);background:#FBE7E5}
+.fb{margin-top:10px;padding:10px 12px;border-radius:var(--radius-s);font-size:.95rem;display:none}
+.fb.show{display:block}
+.fb.ok{background:#E5F4EC}
+.fb.no{background:#FBE7E5}
+.reto.answered{border-left-color:var(--teal)}
+
+.debrief{background:var(--amber-l);border-radius:var(--radius-m);padding:14px 18px;margin:18px 0}
+.nextrow{display:flex;justify-content:flex-end;margin-top:12px}
+
+/* Tarjetas de clasificación */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-s);padding:12px 14px}
+.ccard p{margin-bottom:8px}
+.ccard .opts{flex-direction:row;flex-wrap:wrap}
+.ccard .opt{font-size:.88rem;padding:6px 10px}
+
+/* Flujo circular */
+.flow .node rect{fill:var(--card);stroke:var(--ink);stroke-width:1.5}
+.flow .node text{font-family:var(--display);font-weight:700;font-size:15px;fill:var(--ink)}
+.flow .mk rect{fill:var(--paper);stroke:var(--ink-2);stroke-dasharray:4 3}
+.flow .mk text{font-family:var(--body);font-weight:700;font-size:13px;fill:var(--ink-2)}
+.flow g.real path,.flow g.mon path,.flow g.gov path{fill:none;stroke-width:3;opacity:.45;transition:opacity .3s,stroke-width .3s}
+.flow .real path{stroke:var(--teal)}
+.flow .mon path{stroke:var(--amber-d)}
+.flow .gov path{stroke:var(--coral)}
+.flow g.lit.real path,.flow g.lit.mon path,.flow g.lit.gov path{opacity:1;stroke-width:5;stroke-dasharray:10 6;animation:dash 1s linear infinite}
+.flow .lbl{font-size:12px;fill:var(--ink-2);font-family:var(--body)}
+.flow g.lit + .lbl, .flow .lbl.lit{fill:var(--ink);font-weight:700}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.9rem;color:var(--ink-2);margin-top:6px}
+.legend i{display:inline-block;width:22px;height:4px;vertical-align:middle;margin-right:6px;border-radius:2px}
+
+/* PIB */
+.calc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.calc fieldset{border:1px solid var(--line);border-radius:var(--radius-s);padding:10px}
+.calc legend{font-weight:700;padding:0 4px}
+.calc .row{display:grid;grid-template-columns:1fr 80px 80px;gap:6px;align-items:center;font-size:.92rem;margin:4px 0}
+.calc input{width:100%;padding:5px 6px;border:1px solid var(--line);border-radius:4px;font:inherit}
+.formula{font-family:var(--display);font-size:1.2rem;background:var(--teal-l);border-radius:var(--radius-s);padding:10px 14px;display:inline-block;margin:6px 0 12px}
+
+/* Bienvenida */
+.route{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:18px 0}
+.route button{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-m);padding:14px 16px;color:var(--ink)}
+.route button:hover{border-color:var(--teal)}
+.route strong{font-family:var(--display);font-size:1.1rem;display:block;margin-bottom:4px}
+.route span{color:var(--ink-2);font-size:.93rem}
+.steps{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.steps div{flex:1 1 180px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-s);padding:10px 12px;font-size:.95rem}
+.steps b{display:block;font-family:var(--display);color:var(--teal-d)}
+
+/* Comprobante */
+.cert{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-m);padding:22px;max-width:760px}
+.cert .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.cert label{font-weight:700;font-size:.92rem;display:block;margin-bottom:3px}
+.cert input,.cert textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:var(--radius-s);font:inherit}
+.cert textarea{min-height:90px}
+.cert table{width:100%;border-collapse:collapse;margin:10px 0 16px}
+.cert th,.cert td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left}
+.cert td.n{text-align:right;font-variant-numeric:tabular-nums}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.copied{color:var(--ok);font-weight:700;align-self:center}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;gap:12px;padding-top:12px}
+  nav.stations{position:static;overflow-x:auto;margin:0 -16px;padding:0 16px}
+  nav.stations ol{flex-direction:row;width:max-content}
+  nav.stations button{white-space:nowrap;padding:7px 10px}
+  .lab{grid-template-columns:1fr}
+  .calc{grid-template-columns:1fr}
+  .cert .fields{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+@media print{
+  header.top,nav.stations,main section:not(#s-comprobante),.actions,.noprint{display:none!important}
+  #s-comprobante{display:block!important}
+  body{background:#fff}
+  .cert{border:none;padding:0}
+  .layout{display:block;padding:0}
+}
+.rea-foot{border-top:1px solid var(--line);margin-top:8px;padding:18px 0 28px;font-size:.88rem;color:var(--ink-2)}
+.rea-foot .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+.rea-foot a{color:var(--teal-d)}
+.rea-foot .cc{display:inline-block;border:1.5px solid var(--ink-2);border-radius:4px;padding:0 6px;font-weight:700;color:var(--ink)}
+@media print{.rea-foot{display:block!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Laboratorio de Economía</div>
+    <div class="meta">Principios de Economía, Nivelación UTA</div>
+    <div class="progressbar" aria-hidden="true"><span id="pbar"></span></div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="stations" aria-label="Estaciones del laboratorio">
+    <ol id="navlist"></ol>
+  </nav>
+
+  <main id="main">
+
+    <!-- BIENVENIDA -->
+    <section id="s-inicio" class="active">
+      <div class="intro">
+        <h1>Aprende economía moviendo las piezas</h1>
+        <p class="lede">Diez estaciones para experimentar con los conceptos del curso usando ejemplos de Tungurahua y del Ecuador. En cada una cambias algo, observas qué pasa y respondes retos con retroalimentación inmediata.</p>
+      </div>
+      <div class="steps">
+        <div><b>Explora</b>Mueve controles y activa eventos. Mira cómo responde el gráfico.</div>
+        <div><b>Responde</b>Cada estación tiene retos. Tu primera respuesta es la que cuenta.</div>
+        <div><b>Entrega</b>Al final genera tu comprobante y súbelo a Moodle como evidencia.</div>
+      </div>
+      <div class="route" id="route"></div>
+      <p><small class="note">Puedes recorrer las estaciones en cualquier orden. Si recargas la página, el progreso se reinicia.</small></p>
+    </section>
+
+    <!-- ESTACIÓN: NECESIDADES -->
+    <section id="s-nec">
+      <span class="unit-tag">Unidad 1.1: Introducción a la teoría económica</span>
+      <h2>Necesidades humanas: la pirámide de Maslow</h2>
+      <p class="intro">Todo empieza con las necesidades. El psicólogo Abraham Maslow propuso ordenarlas en una pirámide: primero buscamos satisfacer las de la base y, a medida que lo logramos, nos motivan las de arriba. Toca cada nivel para conocerlo y luego clasifica las situaciones.</p>
+      <div class="lab">
+        <div class="controls">
+          <div class="readout" id="mz-read" aria-live="polite" style="min-height:190px"></div>
+          <div class="readout" style="background:var(--amber-l)"><b style="font-size:1rem">¿Y la economía?</b><br>Las necesidades son ilimitadas y cambian con el tiempo; los recursos para satisfacerlas son limitados. De esa tensión nace la escasez, el problema central de la economía.</div>
+        </div>
+        <div class="chart">
+          <svg id="mz-svg" viewBox="0 0 440 320" role="img" aria-label="Pirámide de necesidades de Maslow con cinco niveles"></svg>
+          <small class="note">El número en cada nivel cuenta las situaciones que ya clasificaste bien.</small>
+        </div>
+      </div>
+      <h3>¿A qué nivel pertenece?</h3>
+      <div class="cards" id="q-nec-a"></div>
+      <h3 style="margin-top:22px">Retos</h3>
+      <div class="retos" id="q-nec-b"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Una familia de Ambato con ingresos bajos destina casi todo a comida, arriendo y transporte: la base de la pirámide. Cuando sube el ingreso aparecen otros gastos, como educación, celebraciones o un emprendimiento propio. Pero el orden no es igual en todas las culturas: en muchas comunidades andinas la reciprocidad y la vida en comunidad son tan básicas como el alimento.</div>
+      <div class="nextrow"><button class="btn">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN: FACTORES Y PRODUCTIVIDAD -->
+    <section id="s-fac">
+      <span class="unit-tag">Unidad 2.3: Factores de la producción y fases del proceso económico</span>
+      <h2>Factores de producción y productividad</h2>
+      <p class="intro">Para producir cualquier cosa se combinan cuatro factores: <b>tierra</b> (recursos naturales), <b>trabajo</b>, <b>capital</b> (máquinas, herramientas, edificios) y <b>emprendimiento</b> (quien organiza y asume el riesgo). Cada uno recibe un pago: renta, salario, interés y ganancia.</p>
+
+      <h3>Arma el taller de calzado de doña Patricia</h3>
+      <div class="cards" id="q-fac-a"></div>
+
+      <h3 style="margin-top:22px">Simulador de productividad</h3>
+      <p class="intro">La productividad es la producción por trabajador. Compara el taller artesanal, donde cada persona hace el zapato completo, con una línea donde cada una se especializa en una tarea (cortar, coser, armar, pegar la suela).</p>
+      <div class="lab">
+        <div class="controls">
+          <div>
+            <label for="pr-w">Trabajadores: <span id="pr-w-v">4</span></label>
+            <input type="range" id="pr-w" min="1" max="8" step="1" value="4">
+          </div>
+          <div>
+            <label>Organización del trabajo</label>
+            <div class="chips">
+              <button class="chip" data-mode="art" aria-pressed="true">Artesanal</button>
+              <button class="chip" data-mode="esp" aria-pressed="false">Especialización</button>
+            </div>
+          </div>
+          <div>
+            <label>Mejoras</label>
+            <div class="chips">
+              <button class="chip" id="pr-cap" aria-pressed="false">Capacitación del personal</button>
+              <button class="chip" id="pr-maq" aria-pressed="false">Nueva troqueladora</button>
+            </div>
+          </div>
+          <div class="readout" id="pr-read" aria-live="polite"></div>
+        </div>
+        <div class="chart"><svg id="pr-svg" viewBox="0 0 540 320" role="img" aria-label="Producción diaria según el número de trabajadores"></svg></div>
+      </div>
+
+      <h3>Fases del proceso económico</h3>
+      <p><small class="note">Ubica cada momento en su fase: producción, circulación, distribución o consumo.</small></p>
+      <div class="cards" id="q-fac-b"></div>
+      <h3 style="margin-top:22px">Retos</h3>
+      <div class="retos" id="q-fac-c"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Ambato es conocida por su calzado y sus curtiembres. Los talleres que se especializan, invierten en maquinaria y capacitan a su gente producen más por trabajador, y eso les permite pagar mejores salarios o vender a menor precio. La especialización también tiene costos: tareas repetitivas y dependencia de cada eslabón de la cadena.</div>
+      <div class="nextrow"><button class="btn">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN: EFICIENCIA Y EFICACIA -->
+    <section id="s-efi">
+      <span class="unit-tag">Unidad 2.1: Principios económicos, eficiencia en la asignación y en la producción</span>
+      <h2>Eficiencia y eficacia</h2>
+      <p class="intro"><b>Eficacia</b> es lograr la meta. <b>Eficiencia</b> es lograrla usando bien los recursos, al menor costo posible. Un taller recibe un pedido de <b>100 pares</b> para la semana. Cada trabajador cuesta $100 y cada máquina $120 por semana. El estándar del sector es producir con un costo de $6,50 por par o menos.</p>
+      <div class="lab">
+        <div class="controls">
+          <div>
+            <label for="ef-w">Trabajadores: <span id="ef-w-v">4</span></label>
+            <input type="range" id="ef-w" min="1" max="8" step="1" value="4">
+          </div>
+          <div>
+            <label for="ef-m">Máquinas: <span id="ef-m-v">0</span></label>
+            <input type="range" id="ef-m" min="0" max="3" step="1" value="0">
+          </div>
+          <div class="readout" id="ef-read" aria-live="polite"></div>
+        </div>
+        <div class="chart"><svg id="ef-svg" viewBox="0 0 460 340" role="img" aria-label="Matriz de eficacia y eficiencia con la posición del plan elegido"></svg></div>
+      </div>
+
+      <h3>¿Eficaz, eficiente, las dos o ninguna?</h3>
+      <div class="cards" id="q-efi-a"></div>
+      <h3 style="margin-top:22px">Retos</h3>
+      <div class="retos" id="q-efi-b"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> En economía se distinguen dos eficiencias. La <b>productiva</b> es producir sin desperdiciar recursos, es decir, estar sobre la frontera de posibilidades. La <b>asignativa</b> es producir lo que la sociedad más valora. Un país puede fabricar sin desperdicio algo que nadie necesita: eso es eficiencia productiva sin eficiencia asignativa.</div>
+      <div class="nextrow"><button class="btn">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN: TIPOS DE MERCADO Y BIENES -->
+    <section id="s-tip">
+      <span class="unit-tag">Unidades 2.2 y 4.2: Sistemas económicos, mercados y tipos de bienes</span>
+      <h2>El mercado, sus formas y los tipos de bienes</h2>
+      <p class="intro">Un <b>mercado</b> es cualquier espacio, físico o virtual, donde compradores y vendedores se encuentran y forman precios. Toda sociedad debe responder tres preguntas: <b>qué</b> producir, <b>cómo</b> producirlo y <b>para quién</b>. Cada sistema económico las responde de forma distinta.</p>
+
+      <h3>Las tres preguntas y los sistemas económicos</h3>
+      <div class="cards" id="q-tip-a"></div>
+
+      <h3 style="margin-top:22px">Estructuras de mercado</h3>
+      <p class="intro">Mueve el control para ver cómo cambia el mercado según cuántas empresas venden.</p>
+      <div class="lab">
+        <div class="controls">
+          <div>
+            <label for="st-n">Número de vendedores</label>
+            <input type="range" id="st-n" min="1" max="4" step="1" value="4">
+            <div style="display:flex;justify-content:space-between" class="note"><small>Uno</small><small>Pocos</small><small>Muchos con marca</small><small>Muchísimos</small></div>
+          </div>
+          <div class="readout" id="st-read" aria-live="polite"></div>
+        </div>
+        <div class="chart"><svg id="st-svg" viewBox="0 0 460 260" role="img" aria-label="Ilustración del número de vendedores en el mercado"></svg></div>
+      </div>
+      <div class="cards" id="q-tip-b"></div>
+
+      <h3 style="margin-top:22px">Bienes privados, públicos y algo intermedio</h3>
+      <p class="intro">Un bien es <b>rival</b> si lo que uno consume ya no lo puede consumir otro. Es <b>excluible</b> si se puede impedir que lo use quien no paga. Clasifica cada bien y míralo aparecer en la matriz.</p>
+      <div class="lab" style="grid-template-columns:1fr">
+        <div class="chart"><svg id="bn-svg" viewBox="0 0 560 330" role="img" aria-label="Matriz de bienes según rivalidad y exclusión"></svg></div>
+      </div>
+      <div class="cards" id="q-tip-c"></div>
+      <h3 style="margin-top:22px">Retos</h3>
+      <div class="retos" id="q-tip-d"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> El Ecuador es una economía mixta: los precios del Mercado Mayorista los forman la oferta y la demanda, pero la educación, la salud pública y el alumbrado los provee el Estado. Los bienes públicos casi nunca los produce el mercado por sí solo, porque nadie quiere pagar por algo que puede usar gratis: el problema del polizón.</div>
+      <div class="nextrow"><button class="btn">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN: OPTIMIZACIÓN -->
+    <section id="s-opt">
+      <span class="unit-tag">Unidades 3.1 y 4.2: Teoría de la demanda y decisiones del consumidor</span>
+      <h2>Optimización: sacar el máximo de un presupuesto</h2>
+      <p class="intro">Andrea tiene <b>$12</b> para el fin de semana y los gasta en dos cosas: helados de Salcedo y salchipapas. Cada unidad adicional le da menos satisfacción que la anterior: es la <b>utilidad marginal decreciente</b>. ¿Qué combinación le da la mayor satisfacción total sin pasarse del presupuesto?</p>
+      <div class="lab">
+        <div class="controls">
+          <div>
+            <label>Helados de Salcedo ($1 cada uno)</label>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button class="btn ghost" id="op-h-" aria-label="Un helado menos">−</button>
+              <b id="op-h" style="font-family:var(--display);font-size:1.8rem;min-width:2ch;text-align:center">0</b>
+              <button class="btn ghost" id="op-h+" aria-label="Un helado más">+</button>
+            </div>
+          </div>
+          <div>
+            <label>Salchipapas (<span id="op-ps">$3</span> cada una)</label>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button class="btn ghost" id="op-s-" aria-label="Una salchipapa menos">−</button>
+              <b id="op-s" style="font-family:var(--display);font-size:1.8rem;min-width:2ch;text-align:center">0</b>
+              <button class="btn ghost" id="op-s+" aria-label="Una salchipapa más">+</button>
+            </div>
+          </div>
+          <div>
+            <label>Precio de la salchipapa</label>
+            <div class="chips">
+              <button class="chip" data-ps="3" aria-pressed="true">$3</button>
+              <button class="chip" data-ps="4" aria-pressed="false">Sube a $4</button>
+            </div>
+          </div>
+          <div class="readout" id="op-read" aria-live="polite"></div>
+        </div>
+        <div class="chart">
+          <table class="mini" id="op-table"></table>
+          <small class="note">UMg = utilidad marginal (satisfacción extra de cada unidad, en "útiles"). UMg/P = satisfacción por cada dólar gastado.</small>
+        </div>
+      </div>
+      <h3>Retos</h3>
+      <div class="retos" id="q-opt"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Optimizar es elegir la mejor opción posible dentro de un límite: un presupuesto, un horario o los recursos de una empresa. La regla es la misma que en el análisis marginal: el último dólar gastado en cada bien debe dar la misma satisfacción. Por eso, cuando un bien sube de precio, compramos menos de él: así nace la ley de la demanda.</div>
+      <div class="nextrow"><button class="btn">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN 1: FPP -->
+    <section id="s-fpp">
+      <span class="unit-tag">Unidad 2.1: Principios económicos</span>
+      <h2>Escasez y frontera de posibilidades de producción</h2>
+      <p class="intro">Tungurahua tiene trabajadores, tierra y máquinas limitados. Imagina que solo puede producir dos cosas: <b>calzado</b> en los talleres de Ambato y <b>fresas</b> en los campos de Píllaro. ¿Cuánto de cada uno puede producir y qué sacrifica al elegir?</p>
+
+      <div class="lab">
+        <div class="controls">
+          <div>
+            <label for="fpp-share">Recursos dedicados al calzado: <span id="fpp-share-v">50</span>%</label>
+            <input type="range" id="fpp-share" min="0" max="100" step="5" value="50">
+          </div>
+          <div>
+            <label for="fpp-emp">Recursos que se están usando: <span id="fpp-emp-v">100</span>%</label>
+            <input type="range" id="fpp-emp" min="40" max="100" step="5" value="100">
+            <small class="note">Menos de 100% significa desempleo o recursos ociosos.</small>
+          </div>
+          <div>
+            <label>Eventos</label>
+            <div class="chips">
+              <button class="chip" id="fpp-tech" aria-pressed="false">Nueva maquinaria para calzado</button>
+              <button class="chip" id="fpp-frost" aria-pressed="false">Helada en los campos</button>
+            </div>
+          </div>
+          <div class="readout" id="fpp-read" aria-live="polite"></div>
+        </div>
+        <div class="chart">
+          <svg id="fpp-svg" viewBox="0 0 540 400" role="img" aria-label="Gráfico de la frontera de posibilidades de producción"></svg>
+          <table class="mini" id="fpp-table" aria-label="Costo de oportunidad"></table>
+          <small class="note">Costo de oportunidad: cuántas toneladas de fresas se dejan de producir al pasar 10% más de recursos al calzado.</small>
+        </div>
+      </div>
+
+      <h3>Retos</h3>
+      <div class="retos" id="q-fpp"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Toda decisión económica tiene un costo de oportunidad: lo que dejas de tener por elegir otra cosa. Cuando el Ecuador dedica más tierra y trabajo a un producto de exportación, deja de producir otros. Los recursos no son igual de buenos para todo, por eso el sacrificio crece mientras más te especializas.</div>
+      <div class="nextrow"><button class="btn" data-go="s-flujo">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN 2: FLUJO CIRCULAR -->
+    <section id="s-flujo">
+      <span class="unit-tag">Unidades 2.2 y 2.3: Cómo funciona la economía y factores de producción</span>
+      <h2>El flujo circular de la economía</h2>
+      <p class="intro">Hogares, empresas y gobierno están conectados por dos tipos de flujos: los <b>reales</b> (bienes, servicios y factores de producción) y los <b>monetarios</b> (pagos en dinero). Clasifica cada situación y observa qué flujo se activa en el diagrama.</p>
+
+      <div class="lab" style="grid-template-columns:1fr">
+        <div class="chart">
+          <svg id="flow-svg" class="flow" viewBox="0 0 640 420" role="img" aria-label="Diagrama del flujo circular con hogares, empresas, gobierno y los mercados de productos y de factores">
+            <defs>
+              <marker id="ah-t" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0E7C7B"/></marker>
+              <marker id="ah-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B9771A"/></marker>
+              <marker id="ah-c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E4675A"/></marker>
+            </defs>
+            <!-- Flujos reales -->
+            <g id="f-bienes" class="real"><path d="M550,170 V45 H392" marker-end="url(#ah-t)"/><path d="M248,45 H90 V168" marker-end="url(#ah-t)"/></g>
+            <text class="lbl" x="420" y="38">bienes y servicios</text>
+            <g id="f-factores" class="real"><path d="M90,252 V378 H248" marker-end="url(#ah-t)"/><path d="M392,378 H550 V252" marker-end="url(#ah-t)"/></g>
+            <text class="lbl" x="398" y="400">trabajo, tierra, capital, emprendimiento</text>
+            <!-- Flujos monetarios -->
+            <g id="f-gasto" class="mon"><path d="M125,170 V78 H248" marker-end="url(#ah-a)"/><path d="M392,78 H515 V168" marker-end="url(#ah-a)"/></g>
+            <text class="lbl" x="132" y="105">gasto de consumo ($)</text>
+            <g id="f-ingresos" class="mon"><path d="M515,252 V342 H392" marker-end="url(#ah-a)"/><path d="M248,342 H125 V254" marker-end="url(#ah-a)"/></g>
+            <text class="lbl" x="400" y="330">salarios, rentas, intereses, ganancias ($)</text>
+            <!-- Gobierno -->
+            <g id="f-impuestos" class="gov"><path d="M172,196 H246" marker-end="url(#ah-c)"/><path d="M468,196 H394" marker-end="url(#ah-c)"/></g>
+            <text class="lbl" x="320" y="170" text-anchor="middle">impuestos (hacia el gobierno)</text>
+            <g id="f-servicios" class="gov"><path d="M248,226 H174" marker-end="url(#ah-c)"/><path d="M392,226 H466" marker-end="url(#ah-c)"/></g>
+            <text class="lbl" x="320" y="260" text-anchor="middle">servicios públicos (desde el gobierno)</text>
+            <!-- Nodos -->
+            <g class="node"><rect x="40" y="170" width="132" height="82" rx="10"/><text x="106" y="216" text-anchor="middle">Hogares</text></g>
+            <g class="node"><rect x="468" y="170" width="132" height="82" rx="10"/><text x="534" y="216" text-anchor="middle">Empresas</text></g>
+            <g class="node"><rect x="248" y="180" width="144" height="62" rx="10" style="stroke:#E4675A"/><text x="320" y="216" text-anchor="middle">Gobierno</text></g>
+            <g class="mk"><rect x="248" y="28" width="144" height="64" rx="8"/><text x="320" y="56" text-anchor="middle">Mercado de</text><text x="320" y="73" text-anchor="middle">productos</text></g>
+            <g class="mk"><rect x="248" y="328" width="144" height="64" rx="8"/><text x="320" y="356" text-anchor="middle">Mercado de</text><text x="320" y="373" text-anchor="middle">factores</text></g>
+          </svg>
+          <div class="legend"><span><i style="background:var(--teal)"></i>Flujo real</span><span><i style="background:var(--amber-d)"></i>Flujo monetario</span><span><i style="background:var(--coral)"></i>Gobierno</span></div>
+        </div>
+      </div>
+
+      <h3>¿Qué flujo es?</h3>
+      <p><small class="note">Elige el flujo que describe cada situación. Al responder, se ilumina en el diagrama.</small></p>
+      <div class="cards" id="q-flujo"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Cada dólar que gastas en una tienda de Ambato termina como salario, arriendo o ganancia de alguien. Por eso los hogares y las empresas dependen unos de otros: si las familias dejan de comprar, las empresas venden menos y pagan menos ingresos. El gobierno entra al circuito cobrando impuestos y entregando servicios públicos.</div>
+      <div class="nextrow"><button class="btn" data-go="s-mercado">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN 3: OFERTA Y DEMANDA -->
+    <section id="s-mercado">
+      <span class="unit-tag">Unidad 3: Demanda, oferta y equilibrio de mercado</span>
+      <h2>El mercado de fresas en el Mayorista de Ambato</h2>
+      <p class="intro">Compradores y vendedores de fresas se encuentran cada mañana. Activa los eventos para mover la demanda o la oferta y observa cómo cambian el precio y la cantidad de equilibrio. Las curvas punteadas muestran la situación inicial.</p>
+
+      <div class="lab">
+        <div class="controls">
+          <div>
+            <label>Eventos que mueven la demanda</label>
+            <div class="chips">
+              <button class="chip d" data-d="150" aria-pressed="false">Sube el ingreso de las familias</button>
+              <button class="chip d" data-d="120" aria-pressed="false">Sube el precio de la mora</button>
+              <button class="chip d" data-d="-180" aria-pressed="false">Rumor: las fresas tienen pesticidas</button>
+            </div>
+          </div>
+          <div>
+            <label>Eventos que mueven la oferta</label>
+            <div class="chips">
+              <button class="chip s" data-s="-180" aria-pressed="false">Helada en Píllaro</button>
+              <button class="chip s" data-s="150" aria-pressed="false">Baja el precio del fertilizante</button>
+              <button class="chip s" data-s="120" aria-pressed="false">Llegan más productores</button>
+            </div>
+          </div>
+          <div>
+            <label for="mk-ceil"><input type="checkbox" id="mk-ceil-on"> Fijar un precio máximo: $<span id="mk-ceil-v">15</span></label>
+            <input type="range" id="mk-ceil" min="5" max="40" step="1" value="15" disabled>
+          </div>
+          <div class="readout" id="mk-read" aria-live="polite"></div>
+          <button class="btn ghost" id="mk-reset">Volver a la situación inicial</button>
+        </div>
+        <div class="chart"><svg id="mk-svg" viewBox="0 0 540 400" role="img" aria-label="Gráfico de oferta y demanda de fresas"></svg></div>
+      </div>
+
+      <h3>Retos</h3>
+      <div class="retos" id="q-mercado"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Cuando una helada golpea los cultivos de la Sierra, el precio de las frutas sube en los mercados de Ambato aunque nadie lo decida: es la oferta que se contrae. Si una autoridad fija un precio por debajo del equilibrio, aparecen la escasez y las filas.</div>
+      <div class="nextrow"><button class="btn" data-go="s-marginal">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN 4: ANÁLISIS MARGINAL -->
+    <section id="s-marginal">
+      <span class="unit-tag">Unidad 4.2: Microeconomía, decisiones en el margen</span>
+      <h2>Análisis marginal: ¿una lata más de pan?</h2>
+      <p class="intro">Doña Carmen tiene una panadería en Ambato con un solo horno. Cada lata de pan se vende a un precio fijo, que es su <b>beneficio marginal</b>. Pero cada lata adicional le cuesta más que la anterior, porque el horno y el espacio no crecen: ese es su <b>costo marginal</b>. Decide cuántas latas hornear.</p>
+
+      <div class="lab">
+        <div class="controls">
+          <div>
+            <label>Latas de pan por mañana</label>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button class="btn ghost" id="mg-minus" aria-label="Una lata menos">−</button>
+              <b id="mg-q" style="font-family:var(--display);font-size:2rem;min-width:2ch;text-align:center">0</b>
+              <button class="btn ghost" id="mg-plus" aria-label="Una lata más">+</button>
+            </div>
+          </div>
+          <div>
+            <label>Precio de cada lata (beneficio marginal)</label>
+            <div class="chips">
+              <button class="chip" data-p="12" aria-pressed="true">$12</button>
+              <button class="chip" data-p="15" aria-pressed="false">$15 (temporada de fiestas)</button>
+            </div>
+          </div>
+          <div class="readout" id="mg-read" aria-live="polite"></div>
+        </div>
+        <div class="chart">
+          <svg id="mg-svg" viewBox="0 0 540 300" role="img" aria-label="Barras de costo marginal frente al beneficio marginal"></svg>
+          <table class="mini" id="mg-table"></table>
+        </div>
+      </div>
+
+      <h3>Retos</h3>
+      <div class="retos" id="q-marginal"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Las buenas decisiones no se toman en bloque, sino unidad por unidad: ¿me conviene una más? Mientras el beneficio marginal sea mayor o igual al costo marginal, conviene seguir. La regla BMg = CMg vale para la panadería, para tus horas de estudio y para cualquier emprendimiento.</div>
+      <div class="nextrow"><button class="btn" data-go="s-pib">Ir a la siguiente estación</button></div>
+    </section>
+
+    <!-- ESTACIÓN 5: PIB -->
+    <section id="s-pib">
+      <span class="unit-tag">Unidad 4.1: PIB, componentes y cálculo nominal y real</span>
+      <h2>El PIB: qué cuenta y cómo se mide</h2>
+      <p class="intro">El Producto Interno Bruto es el valor de mercado de todos los bienes y servicios <b>finales</b> producidos <b>dentro del país</b> en un periodo. Por el lado del gasto se calcula así:</p>
+      <div class="formula">PIB = C + I + G + (X − M)</div>
+
+      <h3>¿Cuenta en el PIB del Ecuador?</h3>
+      <div class="cards" id="q-pib-a"></div>
+
+      <h3 style="margin-top:22px">Calculadora: PIB nominal y PIB real</h3>
+      <p class="intro">Una economía pequeña produce calzado y fresas. Cambia precios y cantidades de 2025 y compara. El PIB real usa los precios del año base (2024) para quitar el efecto de la inflación.</p>
+      <div class="lab" style="grid-template-columns:1fr">
+        <div class="calc">
+          <fieldset><legend>2024 (año base)</legend>
+            <div class="row"><span></span><b>Precio $</b><b>Cantidad</b></div>
+            <div class="row"><span>Calzado (pares)</span><input type="number" id="p24a" value="30" min="0"><input type="number" id="q24a" value="1000" min="0"></div>
+            <div class="row"><span>Fresas (cajas)</span><input type="number" id="p24b" value="20" min="0"><input type="number" id="q24b" value="500" min="0"></div>
+          </fieldset>
+          <fieldset><legend>2025</legend>
+            <div class="row"><span></span><b>Precio $</b><b>Cantidad</b></div>
+            <div class="row"><span>Calzado (pares)</span><input type="number" id="p25a" value="33" min="0"><input type="number" id="q25a" value="1050" min="0"></div>
+            <div class="row"><span>Fresas (cajas)</span><input type="number" id="p25b" value="24" min="0"><input type="number" id="q25b" value="480" min="0"></div>
+          </fieldset>
+        </div>
+        <div class="readout" id="pib-read" aria-live="polite" style="margin-top:12px"></div>
+        <button class="btn ghost noprint" id="pib-reset" style="justify-self:start;margin-top:10px">Restaurar los valores iniciales</button>
+      </div>
+
+      <h3>Retos</h3>
+      <div class="retos" id="q-pib-b"></div>
+      <div class="debrief"><b>Conexión con la realidad.</b> Las remesas que envían los migrantes sostienen a muchas familias ecuatorianas, pero no son producción hecha en el país, por eso no entran en el PIB. Y si el PIB nominal sube solo porque subieron los precios, la economía no produjo más: para saberlo se mira el PIB real.</div>
+      <div class="nextrow"><button class="btn" data-go="s-comprobante">Generar mi comprobante</button></div>
+    </section>
+
+    <!-- COMPROBANTE -->
+    <section id="s-comprobante">
+      <h2 class="noprint">Tu comprobante</h2>
+      <p class="intro noprint">Completa tus datos y la reflexión. Luego descárgalo como PDF (en la ventana de impresión elige "Guardar como PDF") y súbelo a la tarea de Moodle.</p>
+      <div class="cert">
+        <h3>Laboratorio de Economía: comprobante de práctica</h3>
+        <p><small class="note">Principios de Economía, Nivelación, Universidad Técnica de Ambato</small></p>
+        <div class="fields">
+          <div><label for="c-name">Nombre completo</label><input id="c-name" autocomplete="name"></div>
+          <div><label for="c-par">Paralelo</label><input id="c-par"></div>
+        </div>
+        <table>
+          <thead><tr><th>Estación</th><th class="n">Retos acertados</th><th class="n">Estado</th></tr></thead>
+          <tbody id="c-rows"></tbody>
+          <tfoot><tr><th>Total</th><th class="n" id="c-total"></th><th class="n" id="c-pct"></th></tr></tfoot>
+        </table>
+        <label for="c-ref">Reflexión: ¿qué concepto te costó más entender y qué te ayudó a comprenderlo en el laboratorio?</label>
+        <textarea id="c-ref"></textarea>
+        <p style="margin-top:10px"><small class="note" id="c-date"></small></p>
+        <div class="actions">
+          <button class="btn" id="c-print">Descargar como PDF</button>
+          <button class="btn ghost" id="c-copy">Copiar resumen</button>
+          <span class="copied" id="c-copied" hidden>Copiado</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="rea-foot"><div class="wrap">
+  <span class="cc">CC BY-SA 4.0</span>
+  <span>Recurso educativo abierto de <b>Joel Alexander Carvajal Solís</b>, Universidad Técnica de Ambato, 2026. Versión 1.0.</span>
+  <span>Puedes copiarlo y adaptarlo citando al autor y compartiendo con la misma <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">licencia</a>.</span>
+  <span>Basado en el sílabo de Principios de Economía de la UTA. Diseñado y programado con asistencia de inteligencia artificial (Claude, Anthropic).</span>
+</div></footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Estaciones y progreso ---------- */
+const STATIONS=[
+  {id:"s-inicio",name:"Inicio"},
+  {id:"s-nec",name:"Necesidades",key:"nec",desc:"Recorre la pirámide de Maslow y clasifica necesidades de la vida en Ambato."},
+  {id:"s-fpp",name:"Escasez y FPP",key:"fpp",desc:"Reparte recursos entre calzado y fresas y descubre el costo de oportunidad."},
+  {id:"s-fac",name:"Factores y productividad",key:"fac",desc:"Arma un taller, compara trabajo artesanal y especializado, y ordena las fases del proceso económico."},
+  {id:"s-efi",name:"Eficiencia y eficacia",key:"efi",desc:"Busca el plan de producción que cumple la meta al menor costo."},
+  {id:"s-flujo",name:"Flujo circular",key:"flujo",desc:"Clasifica situaciones de Ambato en los flujos reales y monetarios."},
+  {id:"s-tip",name:"Mercados y bienes",key:"tip",desc:"Sistemas económicos, estructuras de mercado y bienes públicos y privados."},
+  {id:"s-mercado",name:"Oferta y demanda",key:"mercado",desc:"Mueve la oferta y la demanda de fresas y encuentra el equilibrio."},
+  {id:"s-marginal",name:"Análisis marginal",key:"marginal",desc:"Ayuda a una panadería a decidir cuánto producir con BMg = CMg."},
+  {id:"s-opt",name:"Optimización",key:"opt",desc:"Reparte un presupuesto para lograr la mayor satisfacción posible."},
+  {id:"s-pib",name:"PIB",key:"pib",desc:"Decide qué cuenta en el PIB y calcula el PIB nominal y real."},
+  {id:"s-comprobante",name:"Comprobante"}
+];
+const score={}; // key -> {total, answered, correct}
+function reg(key,total){ if(!score[key]) score[key]={total:0,answered:0,correct:0}; score[key].total+=total; }
+function record(key,ok){ score[key].answered++; if(ok) score[key].correct++; refreshProgress(); }
+
+const navlist=document.getElementById("navlist");
+STATIONS.forEach(s=>{
+  const li=document.createElement("li");
+  const b=document.createElement("button");
+  b.dataset.go=s.id; b.id="nav-"+s.id;
+  b.innerHTML='<span class="dot"></span><span>'+s.name+'</span>';
+  li.appendChild(b); navlist.appendChild(li);
+});
+const route=document.getElementById("route");
+STATIONS.filter(s=>s.key).forEach(s=>{
+  const b=document.createElement("button"); b.dataset.go=s.id;
+  b.innerHTML="<strong>"+s.name+"</strong><span>"+s.desc+"</span>";
+  route.appendChild(b);
+});
+
+function go(id){
+  document.querySelectorAll("main section").forEach(sec=>sec.classList.toggle("active",sec.id===id));
+  document.querySelectorAll("nav.stations button").forEach(b=>b.setAttribute("aria-current",b.dataset.go===id?"true":"false"));
+  if(id==="s-comprobante") buildCert();
+  window.scrollTo({top:0,behavior:"auto"});
+  const h=document.querySelector("#"+id+" h1, #"+id+" h2"); if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-go]"); if(t) go(t.dataset.go);});
+go("s-inicio");
+
+function refreshProgress(){
+  let tot=0,ans=0;
+  STATIONS.forEach(s=>{
+    if(!s.key) return; const sc=score[s.key]; tot+=sc.total; ans+=sc.answered;
+    const b=document.getElementById("nav-"+s.id);
+    b.classList.toggle("done",sc.answered===sc.total);
+    b.classList.toggle("partial",sc.answered>0&&sc.answered<sc.total);
+  });
+  document.getElementById("pbar").style.width=(tot?100*ans/tot:0)+"%";
+}
+
+/* ---------- Retos de opción múltiple ---------- */
+function makeQuiz(containerId,key,items,opts){
+  opts=opts||{};
+  const box=document.getElementById(containerId);
+  reg(key,items.length);
+  items.forEach(it=>{
+    const d=document.createElement("div"); d.className=opts.card?"ccard":"reto";
+    const p=document.createElement("p"); p.className=opts.card?"":"q"; p.textContent=it.q; d.appendChild(p);
+    const o=document.createElement("div"); o.className="opts";
+    const fb=document.createElement("div"); fb.className="fb"; fb.setAttribute("aria-live","polite");
+    it.o.forEach((txt,i)=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=txt;
+      b.addEventListener("click",()=>{
+        const ok=i===it.a;
+        o.querySelectorAll("button").forEach((x,j)=>{x.disabled=true; if(j===it.a) x.classList.add("right");});
+        if(!ok) b.classList.add("wrong");
+        fb.className="fb show "+(ok?"ok":"no");
+        fb.innerHTML=(ok?"<b>Correcto.</b> ":"<b>No exactamente.</b> ")+it.why;
+        if(!opts.card) d.classList.add("answered");
+        record(key,ok);
+        if(opts.onAnswer) opts.onAnswer(it,ok);
+      });
+      o.appendChild(b);
+    });
+    d.appendChild(o); d.appendChild(fb); box.appendChild(d);
+  });
+}
+
+/* ---------- Utilidades SVG ---------- */
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function axes(svg,o){
+  // o: {x0,y0,w,h,xmax,ymax,xlab,ylab,xt,yt}
+  const g=el("g",{},svg);
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x0+o.w,y2:o.y0,stroke:"#4A5862","stroke-width":1.5},g);
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x0,y2:o.y0-o.h,stroke:"#4A5862","stroke-width":1.5},g);
+  for(let v=0;v<=o.xmax;v+=o.xt){const x=o.x0+v/o.xmax*o.w; el("line",{x1:x,y1:o.y0,x2:x,y2:o.y0+5,stroke:"#4A5862"},g); if(!o.noxl) el("text",{x:x,y:o.y0+19,"text-anchor":"middle","font-size":12,fill:"#4A5862"},g,v);
+    if(v>0) el("line",{x1:x,y1:o.y0,x2:x,y2:o.y0-o.h,stroke:"#E3E9EC"},g);}
+  for(let v=0;v<=o.ymax;v+=o.yt){const y=o.y0-v/o.ymax*o.h; el("line",{x1:o.x0-5,y1:y,x2:o.x0,y2:y,stroke:"#4A5862"},g); el("text",{x:o.x0-9,y:y+4,"text-anchor":"end","font-size":12,fill:"#4A5862"},g,v);
+    if(v>0) el("line",{x1:o.x0,y1:y,x2:o.x0+o.w,y2:y,stroke:"#E3E9EC"},g);}
+  el("text",{x:o.x0+o.w,y:o.y0+38,"text-anchor":"end","font-size":13,"font-weight":700,fill:"#1E2A32"},g,o.xlab);
+  el("text",{x:o.x0-44,y:o.y0-o.h-12,"font-size":13,"font-weight":700,fill:"#1E2A32"},g,o.ylab);
+  return {sx:v=>o.x0+v/o.xmax*o.w, sy:v=>o.y0-v/o.ymax*o.h};
+}
+const fmt=(n,d)=>Number(n).toLocaleString("es-EC",{minimumFractionDigits:d||0,maximumFractionDigits:d||0});
+
+/* ================= ESTACIÓN 1: FPP ================= */
+(function(){
+  const svg=document.getElementById("fpp-svg");
+  const share=document.getElementById("fpp-share"), emp=document.getElementById("fpp-emp");
+  const tech=document.getElementById("fpp-tech"), frost=document.getElementById("fpp-frost");
+  const A=0.7, CMAX=100, FMAX=80;
+  const st={tech:false,frost:false};
+  const C=(x,m)=>CMAX*m*Math.pow(x,A);
+  const F=(x,m)=>FMAX*m*Math.pow(1-x,A);
+  [tech,frost].forEach(b=>b.addEventListener("click",()=>{const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);st[b===tech?"tech":"frost"]=on;draw();}));
+  share.addEventListener("input",draw); emp.addEventListener("input",draw);
+  function draw(){
+    svg.innerHTML="";
+    const mc=st.tech?1.3:1, mf=st.frost?0.7:1;
+    const s=axes(svg,{x0:70,y0:340,w:440,h:300,xmax:140,ymax:100,xt:20,yt:20,xlab:"Calzado (miles de pares)",ylab:"Fresas (toneladas)"});
+    const path=(mcc,mff)=>{let d="";for(let i=0;i<=50;i++){const x=i/50;d+=(i?"L":"M")+s.sx(C(x,mcc)).toFixed(1)+","+s.sy(F(x,mff)).toFixed(1);}return d;};
+    if(st.tech||st.frost) el("path",{d:path(1,1),fill:"none",stroke:"#0E7C7B","stroke-width":2,"stroke-dasharray":"6 5",opacity:.5},svg);
+    // zona alcanzable
+    el("path",{d:path(mc,mf)+"L"+s.sx(0)+","+s.sy(0)+"Z",fill:"#DDEFEE",opacity:.6},svg);
+    el("path",{d:path(mc,mf),fill:"none",stroke:"#0E7C7B","stroke-width":3.5},svg);
+    const x=share.value/100, e=emp.value/100;
+    const c=C(x,mc)*e, f=F(x,mf)*e;
+    if(e<1){ el("circle",{cx:s.sx(C(x,mc)),cy:s.sy(F(x,mf)),r:5,fill:"none",stroke:"#0E7C7B","stroke-width":2},svg); }
+    el("line",{x1:s.sx(c),y1:s.sy(0),x2:s.sx(c),y2:s.sy(f),stroke:"#E4675A","stroke-dasharray":"3 3"},svg);
+    el("line",{x1:s.sx(0),y1:s.sy(f),x2:s.sx(c),y2:s.sy(f),stroke:"#E4675A","stroke-dasharray":"3 3"},svg);
+    el("circle",{cx:s.sx(c),cy:s.sy(f),r:8,fill:"#E4675A",stroke:"#fff","stroke-width":2},svg);
+    el("text",{x:s.sx(140)-6,y:s.sy(100)+18,"text-anchor":"end","font-size":12,fill:"#4A5862"},svg,"Fuera de la curva: inalcanzable");
+    el("text",{x:s.sx(0)+12,y:s.sy(0)-14,"font-size":12,fill:"#0A5B5A"},svg,"Zona alcanzable");
+    document.getElementById("fpp-share-v").textContent=share.value;
+    document.getElementById("fpp-emp-v").textContent=emp.value;
+    const where=e<1?"<b>dentro</b> de la frontera: hay recursos sin usar, se podría producir más de ambos bienes.":"<b>sobre</b> la frontera: producción eficiente, no se puede tener más de uno sin sacrificar el otro.";
+    document.getElementById("fpp-read").innerHTML="Calzado: <b>"+fmt(c,1)+"</b> mil pares<br>Fresas: <b>"+fmt(f,1)+"</b> toneladas<br><span style='display:block;margin-top:6px'>El punto está "+where+"</span>";
+    // tabla de costo de oportunidad
+    const rows=[[10,20],[40,50],[80,90]].map(([a,b])=>{
+      const dc=C(b/100,mc)-C(a/100,mc), df=F(a/100,mf)-F(b/100,mf);
+      return "<tr><td>De "+a+"% a "+b+"%</td><td>+"+fmt(dc,1)+" mil pares</td><td>−"+fmt(df,1)+" t</td><td>"+fmt(df/dc,2)+" t por mil pares</td></tr>";
+    }).join("");
+    document.getElementById("fpp-table").innerHTML="<thead><tr><th>Cambio</th><th>Calzado</th><th>Fresas</th><th>Costo de oportunidad</th></tr></thead><tbody>"+rows+"</tbody>";
+  }
+  draw();
+  makeQuiz("q-fpp","fpp",[
+    {q:"Baja el control de recursos usados a 70%. El punto queda dentro de la frontera. ¿Qué significa?",o:["Que la economía no puede producir esa combinación","Que hay recursos desempleados u ociosos","Que hubo crecimiento económico"],a:1,why:"Un punto interior indica ineficiencia: hay trabajadores o máquinas sin usar. Con los mismos recursos se podría producir más de ambos bienes."},
+    {q:"Mira la tabla: pasar de 10% a 20% de recursos al calzado cuesta pocas fresas, y pasar de 80% a 90% cuesta muchas más. ¿Por qué el costo de oportunidad aumenta?",o:["Porque los recursos no son igual de aptos para producir ambos bienes","Porque el calzado se vende más caro","Porque la frontera es una línea recta"],a:0,why:"Al principio se pasan al calzado los recursos menos útiles para las fresas. Mientras más te especializas, sacrificas tierra y trabajadores muy buenos para el campo. Por eso la frontera es cóncava (curvada hacia afuera)."},
+    {q:"Activa la nueva maquinaria para calzado. ¿Qué le pasa a la frontera?",o:["Se desplaza hacia adentro en ambos ejes","No cambia, solo se mueve el punto","Se expande hacia afuera, sobre todo en el eje del calzado"],a:2,why:"La tecnología aumenta lo que se puede producir con los mismos recursos. Como solo mejora el calzado, la frontera gira hacia afuera en ese eje. La helada hace lo contrario en el eje de las fresas."},
+    {q:"¿Qué significa un punto fuera de la frontera?",o:["Que se desperdician recursos","Que es inalcanzable con los recursos y la tecnología actuales","Que la economía es eficiente"],a:1,why:"Para llegar ahí se necesitan más recursos o mejor tecnología, es decir, crecimiento económico."},
+    {q:"Tungurahua capacita a todos sus trabajadores y mejora su salud. ¿Qué le pasa a la frontera?",o:["Se desplaza hacia afuera en ambos ejes","Solo se mueve el punto","Se desplaza hacia adentro"],a:0,why:"Más capital humano aumenta la capacidad de producir de todo, no solo de un bien."},
+    {q:"Con 50% de recursos en cada bien, ¿cuál es el costo de oportunidad de producir más calzado?",o:["Ninguno, porque hay recursos de sobra","Las fresas que se dejan de producir","El dinero que cuesta el cuero"],a:1,why:"Sobre la frontera, producir más de un bien siempre exige renunciar a algo del otro: eso es el costo de oportunidad."}
+  ]);
+})();
+
+/* ================= ESTACIÓN 2: FLUJO CIRCULAR ================= */
+(function(){
+  const FLOWS=["Bienes y servicios","Gasto de consumo ($)","Factores de producción","Ingresos: salarios, rentas, intereses, ganancias ($)","Impuestos","Servicios públicos"];
+  const IDS=["f-bienes","f-gasto","f-factores","f-ingresos","f-impuestos","f-servicios"];
+  function light(i){ IDS.forEach((id,j)=>document.getElementById(id).classList.toggle("lit",j===i)); }
+  const items=[
+    {q:"Mariela paga $35 por unos zapatos en una tienda del centro de Ambato.",a:1,why:"Es dinero que va de un hogar a una empresa en el mercado de productos."},
+    {q:"Doce operarios trabajan en una curtiembre de Quisapincha.",a:2,why:"Los hogares ofrecen su trabajo (un factor de producción) a una empresa en el mercado de factores."},
+    {q:"Don Luis cobra el arriendo del terreno que alquila a una florícola.",a:3,why:"La renta es el pago por el factor tierra: dinero que va de la empresa al hogar."},
+    {q:"Una panadería entrega pan fresco a sus clientes cada mañana.",a:0,why:"El pan es un bien que va de la empresa al hogar: flujo real en el mercado de productos."},
+    {q:"Un taller textil de Pelileo paga el sueldo quincenal a su costurera.",a:3,why:"El salario es el ingreso que recibe el hogar por su trabajo: flujo monetario en el mercado de factores."},
+    {q:"Una familia aporta la maquinaria de coser que tiene en casa a un emprendimiento de su barrio.",a:2,why:"La maquinaria es capital, un factor de producción que el hogar pone a disposición de una empresa."},
+    {q:"La familia Sánchez paga el impuesto predial al Municipio de Ambato.",a:4,why:"Los impuestos son flujos monetarios de hogares y empresas hacia el gobierno."},
+    {q:"El municipio recoge la basura y mantiene los parques de la ciudad.",a:5,why:"Son servicios públicos que el gobierno entrega a hogares y empresas, financiados con impuestos."},
+    {q:"Una cooperativa de ahorro paga intereses a una familia por sus depósitos.",a:3,why:"El interés es el pago al capital que aporta el hogar: flujo monetario hacia los hogares."},
+    {q:"Un estudiante paga el pasaje del bus urbano.",a:1,why:"Es gasto de un hogar en un servicio que vende una empresa."},
+    {q:"Una empresa paga el impuesto a la renta al SRI.",a:4,why:"Es un flujo monetario de las empresas hacia el gobierno."},
+    {q:"Un agricultor arrienda su terreno a una empresa florícola para que siembre rosas.",a:2,why:"El terreno es tierra, un factor de producción que el hogar pone a disposición de la empresa."}
+  ].map(it=>({q:it.q,o:FLOWS,a:it.a,why:it.why}));
+  makeQuiz("q-flujo","flujo",items,{card:true,onAnswer:(it)=>light(it.a)});
+})();
+
+/* ================= ESTACIÓN 3: MERCADO ================= */
+(function(){
+  const svg=document.getElementById("mk-svg");
+  const ceilOn=document.getElementById("mk-ceil-on"), ceil=document.getElementById("mk-ceil");
+  const chips=[...document.querySelectorAll("#s-mercado .chip")];
+  chips.forEach(b=>b.addEventListener("click",()=>{b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true");draw();}));
+  ceilOn.addEventListener("change",()=>{ceil.disabled=!ceilOn.checked;draw();});
+  ceil.addEventListener("input",draw);
+  document.getElementById("mk-reset").addEventListener("click",()=>{chips.forEach(b=>b.setAttribute("aria-pressed","false"));ceilOn.checked=false;ceil.disabled=true;draw();});
+  const Qd=(p,ds)=>1000+ds-20*p, Qs=(p,ss)=>-200+ss+40*p;
+  function draw(){
+    let ds=0,ss=0; chips.forEach(b=>{if(b.getAttribute("aria-pressed")==="true"){ds+=+(b.dataset.d||0);ss+=+(b.dataset.s||0);}});
+    svg.innerHTML="";
+    const s=axes(svg,{x0:70,y0:340,w:440,h:300,xmax:1400,ymax:50,xt:200,yt:10,xlab:"Cantidad (cajas por día)",ylab:"Precio ($ por caja)"});
+    const line=(f,sh,color,dash,label)=>{
+      const pts=[];for(let p=0;p<=50;p+=0.5){const q=f(p,sh);if(q>=0&&q<=1400)pts.push([q,p]);}
+      if(pts.length<2)return;
+      el("path",{d:pts.map((pt,i)=>(i?"L":"M")+s.sx(pt[0]).toFixed(1)+","+s.sy(pt[1]).toFixed(1)).join(""),fill:"none",stroke:color,"stroke-width":dash?2:3.5,"stroke-dasharray":dash?"6 5":"none",opacity:dash?.55:1},svg);
+      if(label){const last=label==="D"?pts[0]:pts[pts.length-1];el("text",{x:s.sx(last[0])+6,y:s.sy(last[1])+(label==="D"?-6:4),"font-weight":700,"font-size":14,fill:color},svg,label);}
+    };
+    if(ds) line(Qd,0,"#B9771A",true); if(ss) line(Qs,0,"#E4675A",true);
+    line(Qd,ds,"#B9771A",false,"D"); line(Qs,ss,"#E4675A",false,"O");
+    const pe=(1200+ds-ss)/60, qe=Qd(pe,ds);
+    const p0=20,q0=600;
+    el("line",{x1:s.sx(qe),y1:s.sy(0),x2:s.sx(qe),y2:s.sy(pe),stroke:"#0E7C7B","stroke-dasharray":"3 3"},svg);
+    el("line",{x1:s.sx(0),y1:s.sy(pe),x2:s.sx(qe),y2:s.sy(pe),stroke:"#0E7C7B","stroke-dasharray":"3 3"},svg);
+    el("circle",{cx:s.sx(qe),cy:s.sy(pe),r:8,fill:"#0E7C7B",stroke:"#fff","stroke-width":2},svg);
+    let extra="";
+    if(ceilOn.checked){
+      const pc=+ceil.value; document.getElementById("mk-ceil-v").textContent=pc;
+      el("line",{x1:s.sx(0),y1:s.sy(pc),x2:s.sx(1400),y2:s.sy(pc),stroke:"#1E2A32","stroke-width":2},svg);
+      el("text",{x:s.sx(1400)-4,y:s.sy(pc)-6,"text-anchor":"end","font-size":12,fill:"#1E2A32"},svg,"precio máximo $"+pc);
+      if(pc<pe){
+        const qd=Qd(pc,ds), qs=Math.max(0,Qs(pc,ss));
+        el("line",{x1:s.sx(qs),y1:s.sy(pc),x2:s.sx(Math.min(qd,1400)),y2:s.sy(pc),stroke:"#C0392B","stroke-width":6,opacity:.6},svg);
+        extra="<span style='display:block;margin-top:6px'>Con el precio máximo de $"+pc+" se demandan "+fmt(qd)+" cajas pero solo se ofrecen "+fmt(qs)+": <b>escasez de "+fmt(qd-qs)+" cajas</b>.</span>";
+      } else extra="<span style='display:block;margin-top:6px'>El precio máximo está por encima del equilibrio, así que no tiene efecto.</span>";
+    } else document.getElementById("mk-ceil-v").textContent=ceil.value;
+    const arrow=(v,b)=>v>b+0.01?"sube":(v<b-0.01?"baja":"no cambia");
+    document.getElementById("mk-read").innerHTML="Precio de equilibrio: <b>$"+fmt(pe,2)+"</b> ("+arrow(pe,p0)+")<br>Cantidad de equilibrio: <b>"+fmt(qe)+"</b> cajas ("+arrow(qe,q0)+")"+extra;
+  }
+  draw();
+  makeQuiz("q-mercado","mercado",[
+    {q:"Activa solo la helada en Píllaro. ¿Qué pasa con el equilibrio?",o:["El precio sube y la cantidad baja","El precio baja y la cantidad sube","Ambos suben"],a:0,why:"La helada reduce la oferta: la curva O se desplaza a la izquierda. Con menos fresas disponibles, el precio sube y se intercambian menos cajas."},
+    {q:"Si baja el precio de las fresas y la gente compra más cajas, sin que cambie nada más, eso es:",o:["Un desplazamiento de la curva de demanda","Un movimiento a lo largo de la curva de demanda","Un aumento de la oferta"],a:1,why:"Un cambio en el precio del propio bien mueve la cantidad demandada sobre la misma curva. La curva solo se desplaza cuando cambia otra cosa: ingreso, precios de otros bienes, gustos o expectativas."},
+    {q:"En la situación inicial (equilibrio en $20), la autoridad fija un precio máximo de $15. ¿Qué ocurre?",o:["Sobran fresas en el mercado","Nada, el mercado sigue en equilibrio","Faltan fresas: hay escasez de 300 cajas"],a:2,why:"A $15 se demandan 700 cajas y solo se ofrecen 400. Un precio máximo por debajo del equilibrio crea exceso de demanda, es decir, escasez."},
+    {q:"Activa a la vez 'Sube el ingreso de las familias' y 'Llegan más productores'. ¿Qué se puede asegurar?",o:["Que la cantidad de equilibrio sube; el precio depende de cuál curva se mueva más","Que el precio sube y la cantidad baja","Que nada cambia"],a:0,why:"Las dos curvas se desplazan a la derecha, así que se intercambian más cajas. El precio sube un poco o baja según qué desplazamiento sea mayor."},
+    {q:"Si el gobierno fija un precio mínimo de $30 por caja (por encima del equilibrio), ocurre:",o:["Escasez","Excedente: los productores ofrecen más cajas de las que se compran","Equilibrio"],a:1,why:"A $30 se ofrecen 1.000 cajas pero solo se demandan 400: sobran 600. Por eso los precios mínimos suelen venir con compras estatales del excedente."},
+    {q:"¿Cuál de estos eventos desplaza la curva de oferta y no la de demanda?",o:["Sube el ingreso de las familias","Baja el precio del fertilizante","Un rumor sobre pesticidas"],a:1,why:"El fertilizante es un costo de producción. Los otros dos cambian lo que los compradores están dispuestos a pagar."}
+  ]);
+})();
+
+/* ================= ESTACIÓN 4: MARGINAL ================= */
+(function(){
+  const CMG=[4,5,7,9,12,15,19,24];
+  let q=0, P=12;
+  const svg=document.getElementById("mg-svg");
+  document.getElementById("mg-minus").addEventListener("click",()=>{q=Math.max(0,q-1);draw();});
+  document.getElementById("mg-plus").addEventListener("click",()=>{q=Math.min(8,q+1);draw();});
+  const pch=[...document.querySelectorAll("#s-marginal .chip")];
+  pch.forEach(b=>b.addEventListener("click",()=>{pch.forEach(x=>x.setAttribute("aria-pressed",x===b));P=+b.dataset.p;draw();}));
+  function draw(){
+    document.getElementById("mg-q").textContent=q;
+    svg.innerHTML="";
+    const s=axes(svg,{x0:60,y0:250,w:450,h:210,xmax:8,ymax:25,xt:1,noxl:true,yt:5,xlab:"Lata número",ylab:"Dólares"});
+    const bw=34;
+    CMG.forEach((c,i)=>{
+      const x=s.sx(i+0.5)-bw/2; const on=i<q;
+      el("rect",{x:x,y:s.sy(c),width:bw,height:s.sy(0)-s.sy(c),fill:on?"#E4675A":"#F3C3BD",rx:3},svg);
+      el("text",{x:x+bw/2,y:s.sy(c)-5,"text-anchor":"middle","font-size":11,fill:"#4A5862"},svg,"$"+c);
+      el("text",{x:x+bw/2,y:s.sy(0)+19,"text-anchor":"middle","font-size":12,fill:"#4A5862"},svg,i+1);
+    });
+    el("line",{x1:s.sx(0),y1:s.sy(P),x2:s.sx(8),y2:s.sy(P),stroke:"#0E7C7B","stroke-width":3},svg);
+    el("text",{x:s.sx(8),y:s.sy(P)-6,"text-anchor":"end","font-size":12,"font-weight":700,fill:"#0A5B5A"},svg,"BMg = precio $"+P);
+    el("text",{x:s.sx(0)+6,y:s.sy(25)+12,"font-size":12,fill:"#B8463B","font-weight":700},svg,"Barras: costo marginal de cada lata");
+    let rev=0,cost=0,rows="";const opt=CMG.filter(c=>c<=P).length;
+    CMG.forEach((c,i)=>{
+      const n=i+1; const cls=(n<=q?"on ":"")+(n===opt?"opt":"");
+      rows+="<tr class='"+cls+"'><td>Lata "+n+"</td><td>$"+P+"</td><td>$"+c+"</td><td>"+(P-c>=0?"+":"−")+"$"+Math.abs(P-c)+"</td></tr>";
+      if(n<=q){rev+=P;cost+=c;}
+    });
+    document.getElementById("mg-table").innerHTML="<thead><tr><th>Unidad</th><th>BMg</th><th>CMg</th><th>BMg − CMg</th></tr></thead><tbody>"+rows+"</tbody>";
+    const g=rev-cost; const last=q?CMG[q-1]:null;
+    let msg;
+    if(q===0) msg="Empieza a hornear con el botón +.";
+    else if(last<P) msg="La lata "+q+" aportó $"+(P-last)+" de ganancia extra. Todavía conviene seguir: BMg &gt; CMg.";
+    else if(last===P) msg="La lata "+q+" cuesta exactamente lo que vale (BMg = CMg). Aquí está el punto óptimo.";
+    else msg="La lata "+q+" cuesta $"+last+" y se vende en $"+P+": <b>pierdes $"+(last-P)+"</b>. Te pasaste del óptimo.";
+    document.getElementById("mg-read").innerHTML="Ingreso: <b>$"+rev+"</b> &nbsp; Costo variable: <b>$"+cost+"</b><br>Ganancia: <b>$"+g+"</b><span style='display:block;margin-top:6px'>"+msg+"</span>";
+  }
+  draw();
+  makeQuiz("q-marginal","marginal",[
+    {q:"Con un precio de $12, ¿cuántas latas debería hornear doña Carmen siguiendo la regla BMg = CMg?",o:["3 latas","5 latas","8 latas"],a:1,why:"La quinta lata cuesta $12 y se vende en $12: es el último punto donde el beneficio marginal no es menor que el costo marginal. La sexta costaría $15 y haría perder $3."},
+    {q:"En temporada de fiestas el precio sube a $15. ¿Qué cambia?",o:["Conviene hornear 6 latas","Debe seguir en 5 latas","Debe hornear menos"],a:0,why:"Ahora la sexta lata (CMg de $15) iguala el nuevo beneficio marginal. Un precio más alto hace rentable producir unidades que antes no convenían: así nace la oferta con pendiente positiva."},
+    {q:"¿Por qué cada lata adicional le cuesta más a doña Carmen?",o:["Porque la harina se acaba","Porque tiene un horno fijo: más trabajo con el mismo equipo rinde cada vez menos","Porque el precio del pan baja"],a:1,why:"Son los rendimientos marginales decrecientes: con un factor fijo (el horno), cada unidad adicional de trabajo aporta menos producción, y por eso el costo marginal sube."},
+    {q:"¿Qué es el costo marginal?",o:["El costo total dividido para las unidades","El costo adicional de producir una unidad más","El costo del local"],a:1,why:"Marginal significa adicional, en el margen. El costo total dividido para las unidades es el costo medio."},
+    {q:"Con 4 latas, la ganancia de doña Carmen es $23. Si hornea la quinta lata, la ganancia:",o:["Sube a $35","No cambia, porque la quinta lata cuesta lo mismo que se vende","Baja"],a:1,why:"La quinta lata aporta $12 de ingreso y $12 de costo: BMg − CMg = 0. A partir de la sexta, la ganancia empieza a caer."}
+  ]);
+})();
+
+/* ================= ESTACIÓN 5: PIB ================= */
+(function(){
+  const YES=["Sí cuenta","No cuenta"];
+  makeQuiz("q-pib-a","pib",[
+    {q:"Una constructora de Ambato termina una casa nueva y la vende.",a:0,why:"Es producción nueva hecha en el país (inversión residencial, componente I)."},
+    {q:"Compras un auto usado modelo 2015.",a:1,why:"El auto ya se contó en el PIB del año en que se produjo. Revenderlo no es producción nueva."},
+    {q:"Una fábrica de calzado compra cuero para hacer zapatos.",a:1,why:"El cuero es un bien intermedio: su valor ya está incluido en el precio del zapato final. Si se contara dos veces, el PIB se inflaría."},
+    {q:"Una familia recibe el Bono de Desarrollo Humano.",a:1,why:"Es una transferencia: el gobierno entrega dinero sin recibir a cambio un bien o servicio. Por eso no forma parte de G."},
+    {q:"Una familia de Ambato recibe $300 de remesas desde España.",a:1,why:"Las remesas son ingresos para las familias, pero no son producción realizada dentro del Ecuador."},
+    {q:"Ecuador exporta un contenedor de banano a Europa.",a:0,why:"Se produjo dentro del país y se vende afuera: entra en el PIB por el componente X (exportaciones)."},
+    {q:"Una empresa de Latacunga compra una máquina nueva fabricada en Ecuador.",a:0,why:"Es un bien de capital nuevo producido en el país: componente I (inversión)."},
+    {q:"Un médico privado atiende consultas en Ambato y cobra por ellas.",a:0,why:"Los servicios también son producción: entran en el consumo de los hogares (C)."},
+    {q:"Una madre cocina en casa todos los días para su familia.",a:1,why:"Es trabajo valioso, pero no pasa por el mercado, por eso el PIB no lo registra. Es una de sus críticas más conocidas."}
+  ].map(it=>({q:it.q,o:YES,a:it.a,why:it.why})),{card:true});
+
+  const ids=["p24a","q24a","p24b","q24b","p25a","q25a","p25b","q25b"];
+  const init={}; ids.forEach(id=>init[id]=document.getElementById(id).value);
+  ids.forEach(id=>document.getElementById(id).addEventListener("input",calc));
+  document.getElementById("pib-reset").addEventListener("click",()=>{ids.forEach(id=>document.getElementById(id).value=init[id]);calc();});
+  function calc(){
+    const v={}; ids.forEach(id=>v[id]=Math.max(0,parseFloat(document.getElementById(id).value)||0));
+    const n24=v.p24a*v.q24a+v.p24b*v.q24b;
+    const n25=v.p25a*v.q25a+v.p25b*v.q25b;
+    const r25=v.p24a*v.q25a+v.p24b*v.q25b;
+    const gn=n24?(n25/n24-1)*100:0, gr=n24?(r25/n24-1)*100:0, defl=r25?n25/r25*100:0;
+    document.getElementById("pib-read").innerHTML=
+      "PIB nominal 2024 (= PIB real 2024): <b>$"+fmt(n24)+"</b><br>"+
+      "PIB nominal 2025 (precios de 2025): <b>$"+fmt(n25)+"</b> &nbsp; crecimiento nominal: <b>"+fmt(gn,2)+"%</b><br>"+
+      "PIB real 2025 (precios de 2024): <b>$"+fmt(r25)+"</b> &nbsp; crecimiento real: <b>"+fmt(gr,2)+"%</b><br>"+
+      "Deflactor del PIB 2025: <b>"+fmt(defl,1)+"</b>"+
+      "<span style='display:block;margin-top:6px'>"+(gn-gr>0.5?"La mayor parte del aumento nominal se debe a precios más altos, no a más producción.":"El crecimiento nominal y el real son parecidos: los precios casi no cambiaron.")+"</span>";
+  }
+  calc();
+  makeQuiz("q-pib-b","pib",[
+    {q:"Con los valores iniciales, el PIB nominal crece más de 15%. ¿Qué indicador muestra si realmente se produjo más?",o:["El PIB nominal","El PIB real","El deflactor"],a:1,why:"El PIB real mantiene fijos los precios del año base, así que solo cambia si cambian las cantidades producidas."},
+    {q:"Con los valores iniciales, ¿cuánto creció la producción real de 2024 a 2025?",o:["15,43%","2,75%","0%"],a:1,why:"PIB real 2025 = 30×1.050 + 20×480 = $41.100. Frente a $40.000 en 2024, el crecimiento real es 2,75%. El resto del crecimiento nominal fue inflación."},
+    {q:"Con los valores iniciales, el deflactor de 2025 es 112,3. ¿Qué significa?",o:["Que la producción creció 12,3%","Que los precios subieron en promedio 12,3% frente al año base","Que el PIB real bajó"],a:1,why:"El deflactor compara el PIB nominal con el real: mide cuánto subieron los precios de lo producido."},
+    {q:"¿Qué componente del PIB es la compra de computadoras para las escuelas fiscales?",o:["C, consumo","G, gasto del gobierno","X, exportaciones"],a:1,why:"Son bienes y servicios que compra el gobierno: componente G."}
+  ]);
+})();
+
+/* ================= ESTACIÓN: NECESIDADES (MASLOW) ================= */
+(function(){
+  const L=[
+    {n:"Fisiológicas",c:"#0A5B5A",d:"Lo indispensable para vivir: alimento, agua, abrigo, descanso, salud básica.",ex:"Una comida caliente, agua potable, ropa abrigada para las madrugadas frías de la Sierra."},
+    {n:"Seguridad",c:"#0E7C7B",d:"Sentirse protegido y con estabilidad: empleo, vivienda, salud, ahorro para el futuro.",ex:"Un empleo con afiliación al IESS, un arriendo estable, un fondo para emergencias."},
+    {n:"Afiliación",c:"#B9771A",d:"Pertenecer y ser aceptado: familia, amistad, comunidad, pareja.",ex:"La comparsa del barrio en la Fiesta de las Flores y las Frutas, la minga, el equipo de ecuavóley."},
+    {n:"Estima",c:"#E4675A",d:"Reconocimiento propio y de los demás: logros, respeto, prestigio.",ex:"Graduarse en la UTA, un ascenso, que el negocio familiar sea reconocido en el barrio."},
+    {n:"Autorrealización",c:"#B8463B",d:"Desarrollar el propio potencial: creatividad, vocación, propósito.",ex:"Crear el emprendimiento que siempre soñaste, dedicarte al arte o a servir a tu comunidad."}
+  ];
+  const counts=[0,0,0,0,0]; let sel=0;
+  const svg=document.getElementById("mz-svg");
+  function draw(){
+    svg.innerHTML="";
+    const top=12,base=306,H=(base-top)/5,hw=y=>48+170*(y-top)/(base-top);
+    L.forEach((lv,i)=>{
+      const yb=base-H*i, yt=yb-H;
+      const pts=[[220-hw(yb),yb],[220+hw(yb),yb],[220+hw(yt),yt],[220-hw(yt),yt]].map(p=>p.join(",")).join(" ");
+      const g=el("g",{tabindex:0,role:"button","aria-label":"Nivel "+lv.n,style:"cursor:pointer"},svg);
+      el("polygon",{points:pts,fill:lv.c,stroke:i===sel?"#1E2A32":"#fff","stroke-width":i===sel?4:2},g);
+      el("text",{x:220,y:yb-H/2+5,"text-anchor":"middle","font-size":i===4?13:15,"font-weight":700,fill:"#fff","font-family":"Bricolage Grotesque, system-ui"},g,lv.n);
+      if(counts[i]){const cx=220+hw(yb-H/2)+16; el("circle",{cx:cx,cy:yb-H/2,r:12,fill:"#E8A33D"},svg); el("text",{x:cx,y:yb-H/2+4,"text-anchor":"middle","font-size":12,"font-weight":700,fill:"#1E2A32"},svg,counts[i]);}
+      const act=()=>{sel=i;draw();read();};
+      g.addEventListener("click",act); g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();act();}});
+    });
+  }
+  function read(){const lv=L[sel];document.getElementById("mz-read").innerHTML="<b>"+lv.n+"</b><br>"+lv.d+"<span style='display:block;margin-top:8px'><i>En Ambato:</i> "+lv.ex+"</span>";}
+  draw(); read();
+  const N=L.map(l=>l.n);
+  makeQuiz("q-nec-a","nec",[
+    {q:"Agua potable y una comida caliente cada día.",a:0,why:"Sin alimento ni agua no se puede vivir: es la base de la pirámide."},
+    {q:"Una chompa gruesa para las heladas de la madrugada en Píllaro.",a:0,why:"El abrigo protege la vida y la salud: necesidad fisiológica."},
+    {q:"Afiliarse al IESS para tener atención médica y jubilación.",a:1,why:"Busca protección y estabilidad frente a riesgos futuros: seguridad."},
+    {q:"Un contrato de arriendo que no te pueden cancelar de un mes a otro.",a:1,why:"La vivienda estable da tranquilidad: necesidad de seguridad."},
+    {q:"Bailar con la comparsa del barrio en la Fiesta de las Flores y las Frutas.",a:2,why:"Es sentirse parte de un grupo y de una comunidad: afiliación."},
+    {q:"Almorzar cada domingo con toda la familia.",a:2,why:"Los lazos familiares y afectivos corresponden a la afiliación."},
+    {q:"Graduarse de la UTA y que la familia lo celebre.",a:3,why:"Es un logro que trae reconocimiento propio y de los demás: estima."},
+    {q:"Dejar un empleo estable para crear la marca de calzado que siempre soñaste.",a:4,why:"Es desarrollar la propia vocación y potencial: autorrealización."}
+  ].map(it=>({q:it.q,o:N,a:it.a,why:it.why})),{card:true,onAnswer:(it,ok)=>{if(ok){counts[it.a]++;draw();}}});
+  makeQuiz("q-nec-b","nec",[
+    {q:"Según Maslow, ¿qué pasa cuando una persona satisface sus necesidades de la base?",o:["Deja de tener necesidades","Las necesidades del nivel siguiente pasan a motivarla","Vuelve a empezar desde la base"],a:1,why:"Una necesidad satisfecha deja de motivar; la del siguiente nivel toma su lugar. Por eso las necesidades humanas nunca se acaban."},
+    {q:"Si las necesidades son ilimitadas y los recursos son limitados, el problema que estudia la economía es:",o:["La escasez y la elección","La abundancia","La felicidad"],a:0,why:"La escasez obliga a elegir, y toda elección tiene un costo de oportunidad. Ese es el punto de partida de la economía."},
+    {q:"Una crítica frecuente a la pirámide de Maslow es que:",o:["Solo sirve para empresas","No todas las culturas ordenan las necesidades igual; en muchas comunidades lo colectivo es tan básico como lo material","Tiene demasiados niveles"],a:1,why:"Maslow pensó desde una sociedad individualista. En las comunidades andinas, la reciprocidad, la minga y la vida en comunidad pueden ser tan fundamentales como el alimento."},
+    {q:"Una necesidad se convierte en demanda en el mercado cuando:",o:["La persona la siente con fuerza","Está respaldada por la capacidad de pagar","El gobierno la reconoce"],a:1,why:"El mercado responde a la demanda, es decir, a necesidades con poder de compra. Por eso hay necesidades muy urgentes que el mercado no atiende."}
+  ]);
+})();
+
+/* ================= ESTACIÓN: FACTORES Y PRODUCTIVIDAD ================= */
+(function(){
+  const F=["Tierra (recursos naturales)","Trabajo","Capital","Emprendimiento"];
+  makeQuiz("q-fac-a","fac",[
+    {q:"El terreno en Izamba donde se construye el taller.",a:0,why:"La tierra es un recurso natural. Su dueño recibe una renta."},
+    {q:"El agua del río que usa la curtiembre que les vende el cuero.",a:0,why:"Es un recurso que da la naturaleza: pertenece al factor tierra."},
+    {q:"La costurera que une las piezas del zapato.",a:1,why:"Es esfuerzo humano: trabajo. Su pago es el salario."},
+    {q:"El cortador que hizo un curso de patronaje en el SECAP.",a:1,why:"Es trabajo con más capital humano: la capacitación lo vuelve más productivo."},
+    {q:"Las máquinas de coser y la troqueladora.",a:2,why:"Son bienes producidos que sirven para producir otros bienes: capital. Su pago es el interés."},
+    {q:"El edificio del taller.",a:2,why:"Un edificio construido para producir es capital, no tierra."},
+    {q:"Doña Patricia, que pone sus ahorros, organiza todo y asume el riesgo de perder.",a:3,why:"Es el emprendimiento: combina los otros factores y su pago es la ganancia (o la pérdida)."}
+  ].map(it=>({q:it.q,o:F,a:it.a,why:it.why})),{card:true});
+
+  const svg=document.getElementById("pr-svg"), wIn=document.getElementById("pr-w");
+  const MULT=[1,1.3,1.5,1.6,1.6,1.55,1.45,1.35];
+  let mode="art"; const cap=document.getElementById("pr-cap"), maq=document.getElementById("pr-maq");
+  const mch=[...document.querySelectorAll("#s-fac [data-mode]")];
+  mch.forEach(b=>b.addEventListener("click",()=>{mch.forEach(x=>x.setAttribute("aria-pressed",x===b));mode=b.dataset.mode;draw();}));
+  [cap,maq].forEach(b=>b.addEventListener("click",()=>{b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true");draw();}));
+  wIn.addEventListener("input",draw);
+  const boost=()=>(cap.getAttribute("aria-pressed")==="true"?1.15:1)*(maq.getAttribute("aria-pressed")==="true"?1.25:1);
+  const Q=(w,m)=>w<=0?0:4*w*(m==="esp"?MULT[w-1]:1)*boost();
+  function draw(){
+    const w=+wIn.value; document.getElementById("pr-w-v").textContent=w;
+    svg.innerHTML="";
+    const s=axes(svg,{x0:60,y0:270,w:450,h:220,xmax:8,ymax:70,xt:1,yt:10,xlab:"Número de trabajadores",ylab:"Pares por día",noxl:true});
+    for(let i=1;i<=8;i++){
+      const cx=s.sx(i-0.5), qa=Q(i,"art"), qe=Q(i,"esp");
+      el("rect",{x:cx-17,y:s.sy(qa),width:16,height:s.sy(0)-s.sy(qa),fill:mode==="art"&&i===w?"#0E7C7B":"#9CCFCB",rx:2},svg);
+      el("rect",{x:cx+1,y:s.sy(qe),width:16,height:s.sy(0)-s.sy(qe),fill:mode==="esp"&&i===w?"#B9771A":"#F0CF9A",rx:2},svg);
+      el("text",{x:cx,y:s.sy(0)+19,"text-anchor":"middle","font-size":12,fill:i===w?"#1E2A32":"#4A5862","font-weight":i===w?700:400},svg,i);
+    }
+    el("rect",{x:300,y:12,width:12,height:10,fill:"#0E7C7B"},svg); el("text",{x:318,y:21,"font-size":12,fill:"#1E2A32"},svg,"Artesanal");
+    el("rect",{x:400,y:12,width:12,height:10,fill:"#B9771A"},svg); el("text",{x:418,y:21,"font-size":12,fill:"#1E2A32"},svg,"Especialización");
+    const q=Q(w,mode), pm=q-Q(w-1,mode);
+    document.getElementById("pr-read").innerHTML="Producción: <b>"+fmt(q,1)+"</b> pares por día<br>Productividad: <b>"+fmt(q/w,1)+"</b> pares por trabajador<br>Producto marginal del trabajador "+w+": <b>"+fmt(pm,1)+"</b> pares"+
+      (mode==="esp"&&w>5?"<span style='display:block;margin-top:6px'>Con tantos trabajadores en el mismo espacio, cada nuevo aporta menos: rendimientos decrecientes.</span>":"");
+  }
+  draw();
+
+  const P=["Producción","Circulación","Distribución","Consumo"];
+  makeQuiz("q-fac-b","fac",[
+    {q:"El taller corta, cose y arma 200 pares de zapatos.",a:0,why:"Se transforman los factores en un bien: producción."},
+    {q:"Un camión lleva los zapatos de Ambato a una tienda de Quito.",a:1,why:"El bien se traslada e intercambia hasta llegar a quien lo usará: circulación."},
+    {q:"La empresa paga los salarios, el arriendo del local y reparte las utilidades.",a:2,why:"Se reparte el ingreso entre los dueños de los factores: distribución."},
+    {q:"Un estudiante usa sus zapatos nuevos para ir a clases.",a:3,why:"El bien satisface una necesidad: consumo."}
+  ].map(it=>({q:it.q,o:P,a:it.a,why:it.why})),{card:true});
+
+  makeQuiz("q-fac-c","fac",[
+    {q:"¿Cómo se mide la productividad del trabajo?",o:["Producción total dividida para el número de trabajadores","Número de horas trabajadas","Precio de venta del producto"],a:0,why:"Es el producto medio: cuánto produce, en promedio, cada trabajador en un periodo."},
+    {q:"Con 4 trabajadores, ¿qué pasa con la productividad al pasar de artesanal a especialización?",o:["Baja","Sube, porque cada persona se vuelve más hábil en una sola tarea y se pierde menos tiempo","No cambia"],a:1,why:"Es la división del trabajo: con 4 personas especializadas se producen 25,6 pares en lugar de 16, sin contratar a nadie más."},
+    {q:"Además de la especialización, ¿qué otras formas aumentan la productividad?",o:["Bajar los salarios","Invertir en capital (maquinaria) y en capital humano (capacitación)","Contratar más trabajadores sin cambiar nada"],a:1,why:"Prueba los botones de mejoras: la capacitación y la nueva máquina elevan la producción por trabajador en cualquier tamaño del taller."},
+    {q:"¿Qué pago recibe el factor capital?",o:["Salario","Renta","Interés"],a:2,why:"La tierra recibe renta, el trabajo salario, el capital interés y el emprendimiento ganancia."}
+  ]);
+})();
+
+/* ================= ESTACIÓN: EFICIENCIA Y EFICACIA ================= */
+(function(){
+  const M=[1,1.6,2.0,2.2], META=100, STD=6.5;
+  const svg=document.getElementById("ef-svg"), wI=document.getElementById("ef-w"), mI=document.getElementById("ef-m");
+  [wI,mI].forEach(x=>x.addEventListener("input",draw));
+  function plan(w,m){const q=Math.round(12*w*M[m]), c=100*w+120*m; return {q:q,c:c,cpp:c/q};}
+  let best=null;
+  for(let w=1;w<=8;w++)for(let m=0;m<=3;m++){const p=plan(w,m);if(p.q>=META&&p.cpp<=STD&&(!best||p.c<best.c))best={w:w,m:m,c:p.c};}
+  function draw(){
+    const w=+wI.value,m=+mI.value,p=plan(w,m);
+    document.getElementById("ef-w-v").textContent=w; document.getElementById("ef-m-v").textContent=m;
+    const eficaz=p.q>=META, efic=p.cpp<=STD;
+    svg.innerHTML="";
+    const X0=90,Y0=20,W=340,H=260;
+    const q=[[0,0,"Eficiente pero no eficaz","#FBEFD9"],[1,0,"Eficaz y eficiente","#DDEFEE"],[0,1,"Ni eficaz ni eficiente","#FBE3E0"],[1,1,"Eficaz pero no eficiente","#FBEFD9"]];
+    // fila 0 = eficiente (arriba), columna 1 = eficaz (derecha)
+    q.forEach(([c,r,t,f])=>{el("rect",{x:X0+c*W/2,y:Y0+r*H/2,width:W/2-4,height:H/2-4,rx:8,fill:f},svg);el("text",{x:X0+c*W/2+W/4-2,y:Y0+r*H/2+22,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"#1E2A32"},svg,t);});
+    el("text",{x:X0+W/2,y:Y0+H+24,"text-anchor":"middle","font-size":13,fill:"#4A5862"},svg,"No cumple la meta  ←  Eficacia  →  Cumple la meta");
+    el("text",{x:24,y:Y0+H/2,"text-anchor":"middle","font-size":13,fill:"#4A5862",transform:"rotate(-90 24 "+(Y0+H/2)+")"},svg,"Costo alto  ←  Eficiencia  →  Costo bajo");
+    const cx=X0+(eficaz?1:0)*W/2+W/4-2, cy=Y0+(efic?0:1)*H/2+H/4+10;
+    el("circle",{cx:cx,cy:cy,r:14,fill:"#E4675A",stroke:"#fff","stroke-width":3},svg);
+    el("text",{x:cx,y:cy+34,"text-anchor":"middle","font-size":12,fill:"#1E2A32","font-weight":700},svg,p.q+" pares, $"+fmt(p.cpp,2)+" c/u");
+    let msg=eficaz?(efic?"Cumples el pedido y con un costo por par dentro del estándar.":"Cumples el pedido, pero gastas demasiado por cada par."):(efic?"Produces barato, pero no alcanzas los 100 pares pedidos.":"No cumples el pedido y además produces caro.");
+    if(eficaz&&p.q>140) msg+=" Ojo: produces "+(p.q-META)+" pares que nadie pidió.";
+    if(best&&w===best.w&&m===best.m) msg+=" <strong>Encontraste el plan eficaz y eficiente con el menor costo total.</strong>";
+    document.getElementById("ef-read").innerHTML="Producción: <b>"+p.q+"</b> pares<br>Costo total: <b>$"+fmt(p.c)+"</b><br>Costo por par: <b>$"+fmt(p.cpp,2)+"</b><span style='display:block;margin-top:6px'>"+msg+"</span>";
+  }
+  draw();
+  const Q4=["Eficaz y eficiente","Eficaz pero no eficiente","Eficiente pero no eficaz","Ni eficaz ni eficiente"];
+  makeQuiz("q-efi-a","efi",[
+    {q:"Una brigada de salud vacunó a toda la parroquia usando la mitad del presupuesto previsto.",a:0,why:"Cumplió la meta y ahorró recursos."},
+    {q:"El municipio terminó el puente a tiempo, pero gastó el doble de lo presupuestado.",a:1,why:"Logró el objetivo, pero con un uso excesivo de recursos."},
+    {q:"Un taller produce cada zapato al menor costo del sector, pero no entregó el pedido completo.",a:2,why:"Usa bien sus recursos, pero no alcanza la meta."},
+    {q:"Un proyecto gastó todo su presupuesto y no terminó la carretera.",a:3,why:"No cumplió la meta y desperdició recursos."},
+    {q:"Una estudiante aprobó el examen estudiando dos horas bien organizadas en lugar de toda la noche.",a:0,why:"Logró el objetivo con menos tiempo, su recurso más escaso."}
+  ].map(it=>({q:it.q,o:Q4,a:it.a,why:it.why})),{card:true});
+  makeQuiz("q-efi-b","efi",[
+    {q:"En el simulador, ¿qué plan cumple el pedido de 100 pares con el menor costo total?",o:["8 trabajadores y ninguna máquina","6 trabajadores y 1 máquina","4 trabajadores y 3 máquinas"],a:1,why:"Produce 115 pares por $720 ($6,26 por par). Con 8 trabajadores sin máquinas solo llegas a 96 pares y pagas $800."},
+    {q:"Un país produce sobre su frontera de posibilidades, pero fabrica miles de paraguas para una región donde casi nunca llueve. Hay:",o:["Eficiencia productiva, pero no asignativa","Eficiencia asignativa, pero no productiva","Ambas eficiencias"],a:0,why:"No desperdicia recursos al producir, pero produce algo que la sociedad no valora."},
+    {q:"En una economía de mercado, ¿qué señal ayuda a que los recursos vayan a lo que la gente más valora?",o:["Los precios","Los impuestos","La publicidad"],a:0,why:"Si un bien es muy valorado, su precio sube y atrae más recursos hacia su producción. Así el mercado busca la eficiencia asignativa."},
+    {q:"¿Cuál es la diferencia entre eficacia y eficiencia?",o:["Son sinónimos","Eficacia es cumplir el objetivo; eficiencia es cumplirlo con el menor uso de recursos","Eficiencia es cumplir el objetivo; eficacia es gastar poco"],a:1,why:"Se puede ser eficaz sin ser eficiente, y al revés. Lo ideal es ambas."}
+  ]);
+})();
+
+/* ================= ESTACIÓN: TIPOS DE MERCADO Y BIENES ================= */
+(function(){
+  const QQ=["¿Qué producir?","¿Cómo producir?","¿Para quién producir?"];
+  makeQuiz("q-tip-a","tip",[
+    {q:"Una florícola de Cotopaxi decide sembrar rosas rojas en lugar de claveles porque se venden mejor.",o:QQ,a:0,why:"Decide qué bien producir según lo que los compradores demandan."},
+    {q:"Un taller reemplaza a tres costureras por una máquina automática.",o:QQ,a:1,why:"Cambia la combinación de factores: es la pregunta de cómo producir."},
+    {q:"Quien tiene más ingresos puede comprar más zapatos de marca.",o:QQ,a:2,why:"En una economía de mercado, el ingreso decide para quién se produce."}
+  ],{card:true});
+  const SIS=["Tradicional","De mercado","Planificada","Mixta"];
+  makeQuiz("q-tip-a","tip",[
+    {q:"En la comunidad, la minga y la costumbre de los mayores deciden qué se siembra y cómo se reparte.",o:SIS,a:0,why:"Las tres preguntas se responden por tradición y costumbre."},
+    {q:"Los precios del Mercado Mayorista se forman por la oferta y la demanda.",o:SIS,a:1,why:"Las decisiones las toman compradores y vendedores guiados por los precios."},
+    {q:"Un comité central fija cuánto produce cada fábrica y a qué precio se vende.",o:SIS,a:2,why:"El Estado responde las tres preguntas mediante un plan central."},
+    {q:"El Ecuador combina empresas privadas con educación y salud públicas.",o:SIS,a:3,why:"La mayoría de países, incluido el Ecuador, son economías mixtas."}
+  ],{card:true});
+
+  const S=[
+    {n:"Monopolio",k:1,d:"Una sola empresa vende un bien sin sustitutos cercanos. Tiene mucho poder para fijar el precio y existen fuertes barreras para que entren otras.",ex:"La distribución de electricidad o de agua potable en tu ciudad."},
+    {n:"Oligopolio",k:3,d:"Pocas empresas grandes dominan el mercado. Cada una vigila lo que hacen las demás y a veces actúan casi coordinadas.",ex:"La telefonía móvil, dominada por tres operadoras."},
+    {n:"Competencia monopolística",k:14,d:"Muchas empresas venden productos parecidos pero diferenciados por marca, sabor o servicio. Cada una tiene un pequeño poder sobre su precio.",ex:"Las panaderías, los restaurantes o las marcas de calzado de Ambato."},
+    {n:"Competencia perfecta",k:48,d:"Muchísimos vendedores ofrecen un producto casi idéntico. Nadie puede fijar el precio: lo toman del mercado.",ex:"Los productores de fresas o de papas en el Mercado Mayorista."}
+  ];
+  const nI=document.getElementById("st-n"), svg=document.getElementById("st-svg");
+  nI.addEventListener("input",draw);
+  function draw(){
+    const s=S[+nI.value-1]; svg.innerHTML="";
+    const cols=Math.ceil(Math.sqrt(s.k*1.8)), rows=Math.ceil(s.k/cols), size=Math.min(60,380/cols,190/rows);
+    for(let i=0;i<s.k;i++){
+      const c=i%cols,r=Math.floor(i/cols), x=230-cols*size/2+c*size, y=130-rows*size/2+r*size;
+      const g=el("g",{},svg);
+      el("rect",{x:x+size*.12,y:y+size*.35,width:size*.76,height:size*.55,fill:s.k===1?"#E4675A":(s.k<5?"#B9771A":"#0E7C7B"),rx:size*.06},g);
+      el("polygon",{points:(x+size*.05)+","+(y+size*.38)+" "+(x+size*.5)+","+(y+size*.1)+" "+(x+size*.95)+","+(y+size*.38),fill:"#1E2A32"},g);
+      el("rect",{x:x+size*.4,y:y+size*.6,width:size*.2,height:size*.3,fill:"#fff",opacity:.8},g);
+    }
+    el("text",{x:230,y:250,"text-anchor":"middle","font-size":15,"font-weight":700,fill:"#1E2A32","font-family":"Bricolage Grotesque, system-ui"},svg,s.n);
+    document.getElementById("st-read").innerHTML="<b>"+s.n+"</b><br>"+s.d+"<span style='display:block;margin-top:6px'><i>Ejemplo:</i> "+s.ex+"</span>";
+  }
+  draw();
+  const ST=S.map(x=>x.n);
+  makeQuiz("q-tip-b","tip",[
+    {q:"Cientos de productores venden papas casi idénticas en el Mercado Mayorista de Ambato.",o:ST,a:3,why:"Muchos vendedores y producto homogéneo: ninguno puede fijar el precio."},
+    {q:"Una sola empresa distribuye la electricidad en la ciudad.",o:ST,a:0,why:"Un solo oferente y enormes barreras de entrada: monopolio, en este caso natural."},
+    {q:"Tres operadoras concentran casi toda la telefonía móvil del país.",o:ST,a:1,why:"Pocas empresas grandes y muy interdependientes."},
+    {q:"Decenas de panaderías venden pan, cada una con su receta y su clientela fiel.",o:ST,a:2,why:"Productos parecidos pero diferenciados: competencia monopolística."}
+  ],{card:true});
+
+  const QD=[["Bien privado","Rival y excluible"],["Recurso común","Rival, no excluible"],["Bien de club","No rival, excluible"],["Bien público","No rival, no excluible"]];
+  const placed=[[],[],[],[]];
+  const bsvg=document.getElementById("bn-svg");
+  function drawB(){
+    bsvg.innerHTML="";
+    const X0=110,Y0=40,W=440,H=270;
+    el("text",{x:X0+W/4,y:26,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"#4A5862"},bsvg,"Excluible");
+    el("text",{x:X0+3*W/4,y:26,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"#4A5862"},bsvg,"No excluible");
+    el("text",{x:52,y:Y0+H/4+4,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"#4A5862"},bsvg,"Rival");
+    el("text",{x:52,y:Y0+3*H/4+4,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"#4A5862"},bsvg,"No rival");
+    const pos=[[0,0,"#DDEFEE"],[1,0,"#FBE3E0"],[0,1,"#FBEFD9"],[1,1,"#E6EEF0"]];
+    pos.forEach(([c,r,f],i)=>{
+      const x=X0+c*W/2,y=Y0+r*H/2;
+      el("rect",{x:x,y:y,width:W/2-6,height:H/2-6,rx:8,fill:f},bsvg);
+      el("text",{x:x+12,y:y+22,"font-size":14,"font-weight":700,fill:"#1E2A32","font-family":"Bricolage Grotesque, system-ui"},bsvg,QD[i][0]);
+      placed[i].forEach((t,j)=>el("text",{x:x+12,y:y+44+j*18,"font-size":12,fill:"#1E2A32"},bsvg,"• "+t));
+    });
+  }
+  drawB();
+  const items=[
+    {q:"Un helado de paila.",s:"Helado de paila",a:0,why:"Si tú lo comes, nadie más puede (rival), y sin pagar no te lo dan (excluible)."},
+    {q:"El alumbrado público de la avenida Cevallos.",s:"Alumbrado público",a:3,why:"Que tú lo uses no reduce la luz para otros, y no se puede impedir que alguien la aproveche."},
+    {q:"Una película en una plataforma de streaming.",s:"Película en streaming",a:2,why:"Muchos pueden verla a la vez (no rival), pero solo quien paga la suscripción (excluible)."},
+    {q:"Los peces de un río sin control de pesca.",s:"Peces del río",a:1,why:"Lo que uno pesca ya no está para otro (rival), pero nadie puede impedir pescar (no excluible). Por eso se agotan."},
+    {q:"La defensa nacional.",s:"Defensa nacional",a:3,why:"Protege a todos a la vez y no se puede excluir a nadie: bien público puro."},
+    {q:"Una consulta en un consultorio médico privado.",s:"Consulta privada",a:0,why:"Mientras te atienden, el médico no atiende a otro, y hay que pagar: bien privado."}
+  ];
+  makeQuiz("q-tip-c","tip",items.map(it=>({q:it.q,o:QD.map(x=>x[0]),a:it.a,why:it.why})),{card:true,onAnswer:(it)=>{const src=items.find(x=>x.q===it.q);placed[src.a].push(src.s);drawB();}});
+  makeQuiz("q-tip-d","tip",[
+    {q:"¿Qué es el problema del polizón?",o:["Que algunos usen un bien sin pagar, esperando que otros lo financien","Que los precios suban demasiado","Que haya pocos vendedores"],a:0,why:"Como nadie puede ser excluido de un bien público, cada persona tiene el incentivo de no pagar. Por eso estos bienes suelen financiarse con impuestos."},
+    {q:"¿Por qué el mercado por sí solo produce pocos bienes públicos?",o:["Porque son muy baratos","Porque es difícil cobrar a quienes los usan, entonces no son rentables para una empresa privada","Porque la gente no los necesita"],a:1,why:"Es una falla de mercado: el beneficio social es alto, pero la empresa no puede capturarlo cobrando."},
+    {q:"En competencia perfecta, cada vendedor:",o:["Fija el precio que quiere","Toma el precio que forma el mercado","Se pone de acuerdo con los demás"],a:1,why:"Un productor de papas en el Mayorista no puede cobrar más que el resto: si lo hace, nadie le compra."},
+    {q:"¿Qué tienen en común el monopolio y el oligopolio?",o:["Muchos vendedores pequeños","Pocas o una sola empresa con poder para influir en el precio","Productos idénticos y precio fijado por el mercado"],a:1,why:"En ambos casos hay barreras de entrada y poder de mercado, por eso suelen regularse."}
+  ]);
+})();
+
+/* ================= ESTACIÓN: OPTIMIZACIÓN ================= */
+(function(){
+  const UH=[10,8,6,4,3,2,1,0,0,0,0,0], US=[36,24,18,12,6,3];
+  let h=0,s=0,ps=3; const B=12, PH=1;
+  const tot=(n,arr)=>arr.slice(0,n).reduce((a,b)=>a+b,0);
+  function bestU(){let b={u:-1};for(let i=0;i<=12;i++)for(let j=0;j<=6;j++){if(i*PH+j*ps<=B){const u=tot(i,UH)+tot(j,US);if(u>b.u)b={u:u,h:i,s:j};}}return b;}
+  const set=(dh,dsl)=>{const nh=Math.max(0,Math.min(12,h+dh)),ns=Math.max(0,Math.min(6,s+dsl));if(nh*PH+ns*ps<=B){h=nh;s=ns;}else{flash();}draw();};
+  let warn=false; function flash(){warn=true;}
+  document.getElementById("op-h+").addEventListener("click",()=>set(1,0));
+  document.getElementById("op-h-").addEventListener("click",()=>set(-1,0));
+  document.getElementById("op-s+").addEventListener("click",()=>set(0,1));
+  document.getElementById("op-s-").addEventListener("click",()=>set(0,-1));
+  const pch=[...document.querySelectorAll("#s-opt [data-ps]")];
+  pch.forEach(b=>b.addEventListener("click",()=>{pch.forEach(x=>x.setAttribute("aria-pressed",x===b));ps=+b.dataset.ps;document.getElementById("op-ps").textContent="$"+ps;while(h*PH+s*ps>B&&s>0)s--;draw();}));
+  function draw(){
+    document.getElementById("op-h").textContent=h; document.getElementById("op-s").textContent=s;
+    let rows="";
+    for(let i=0;i<8;i++){
+      const hc=i<h?" style='background:var(--teal-l);font-weight:700'":"", sc=i<s?" style='background:var(--amber-l);font-weight:700'":"";
+      rows+="<tr><td>Unidad "+(i+1)+"</td><td"+hc+">"+UH[i]+"</td><td"+hc+">"+fmt(UH[i]/PH,1)+"</td><td"+sc+">"+(i<6?US[i]:"–")+"</td><td"+sc+">"+(i<6?fmt(US[i]/ps,1):"–")+"</td></tr>";
+    }
+    document.getElementById("op-table").innerHTML="<thead><tr><th></th><th>UMg helado</th><th>UMg/P</th><th>UMg salchipapa</th><th>UMg/P</th></tr></thead><tbody>"+rows+"</tbody>";
+    const g=h*PH+s*ps, u=tot(h,UH)+tot(s,US), b=bestU();
+    let msg;
+    if(warn){msg="No te alcanza: el presupuesto es de $12.";warn=false;}
+    else if(u===b.u&&g<=B) msg="<strong>Encontraste la combinación óptima.</strong> No hay otra que dé más satisfacción con $12."+(h&&s?" Fíjate que la última unidad de cada bien da una satisfacción por dólar muy parecida.":"");
+    else if(B-g>=Math.min(PH,ps)) msg="Te sobra dinero: todavía puedes comprar algo más.";
+    else msg="Gastaste casi todo, pero hay otra combinación que da más satisfacción. Compara la UMg/P de la última unidad de cada bien.";
+    document.getElementById("op-read").innerHTML="Gasto: <b>$"+g+"</b> de $12<br>Utilidad total: <b>"+u+"</b> útiles<span style='display:block;margin-top:6px'>"+msg+"</span>";
+  }
+  draw();
+  makeQuiz("q-opt","opt",[
+    {q:"Con la salchipapa a $3, ¿qué combinación maximiza la satisfacción de Andrea?",o:["12 helados","3 helados y 3 salchipapas","4 salchipapas"],a:1,why:"Da 102 útiles. En esa combinación, el último helado y la última salchipapa dan 6 útiles por dólar cada uno: la regla de la igualdad de UMg/P."},
+    {q:"¿Qué dice la regla de optimización del consumidor?",o:["Gastar todo en el bien más barato","Repartir el presupuesto para que el último dólar gastado en cada bien dé la misma satisfacción","Comprar la misma cantidad de cada bien"],a:1,why:"Si un bien diera más satisfacción por dólar, convendría pasar dinero hacia él. El óptimo llega cuando ya no hay ganancia en moverlo."},
+    {q:"Si la salchipapa sube a $4, la mejor elección pasa a ser 4 helados y 2 salchipapas. ¿Qué muestra esto?",o:["Que el precio no importa","La ley de la demanda: al subir el precio, se compra menos del bien","Que Andrea prefiere los helados"],a:1,why:"El cambio de precio cambia la satisfacción por dólar. Optimizando, Andrea compra menos salchipapas: así se construye la curva de demanda."},
+    {q:"¿Qué es la utilidad marginal decreciente?",o:["Que cada unidad adicional de un bien da menos satisfacción que la anterior","Que los precios bajan con el tiempo","Que la satisfacción total siempre baja"],a:0,why:"El primer helado se disfruta mucho; el séptimo, casi nada. La utilidad total sigue subiendo, pero cada vez menos."}
+  ]);
+})();
+
+/* Botones de "siguiente estación" según el orden de STATIONS */
+STATIONS.forEach((st,i)=>{const b=document.querySelector("#"+st.id+" .nextrow button");const nx=STATIONS[i+1];if(b&&nx){b.dataset.go=nx.id;b.textContent=nx.id==="s-comprobante"?"Generar mi comprobante":"Ir a la siguiente estación";}});
+
+/* ================= COMPROBANTE ================= */
+function buildCert(){
+  let rows="",c=0,t=0;
+  STATIONS.filter(s=>s.key).forEach(s=>{
+    const sc=score[s.key]; c+=sc.correct; t+=sc.total;
+    const est=sc.answered===sc.total?"Completa":(sc.answered?"En curso ("+sc.answered+"/"+sc.total+")":"Sin iniciar");
+    rows+="<tr><td>"+s.name+"</td><td class='n'>"+sc.correct+" de "+sc.total+"</td><td class='n'>"+est+"</td></tr>";
+  });
+  document.getElementById("c-rows").innerHTML=rows;
+  document.getElementById("c-total").textContent=c+" de "+t;
+  document.getElementById("c-pct").textContent=Math.round(100*c/t)+"%";
+  document.getElementById("c-date").textContent="Generado el "+new Date().toLocaleString("es-EC",{dateStyle:"long",timeStyle:"short"});
+}
+document.getElementById("c-print").addEventListener("click",()=>{buildCert();window.print();});
+document.getElementById("c-copy").addEventListener("click",()=>{
+  buildCert();
+  const name=document.getElementById("c-name").value||"(sin nombre)", par=document.getElementById("c-par").value||"-";
+  let txt="Laboratorio de Economía - Comprobante\nNombre: "+name+"\nParalelo: "+par+"\n";
+  STATIONS.filter(s=>s.key).forEach(s=>{const sc=score[s.key];txt+=s.name+": "+sc.correct+"/"+sc.total+"\n";});
+  txt+="Total: "+document.getElementById("c-total").textContent+" ("+document.getElementById("c-pct").textContent+")\n";
+  txt+="Reflexión: "+document.getElementById("c-ref").value+"\n"+document.getElementById("c-date").textContent;
+  const done=()=>{const m=document.getElementById("c-copied");m.hidden=false;setTimeout(()=>m.hidden=true,2000);};
+  try{navigator.clipboard.writeText(txt).then(done,()=>fallback(txt,done));}catch(e){fallback(txt,done);}
+});
+function fallback(txt,done){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){}ta.remove();}
+
+refreshProgress();
+})();
+</script>
+</body>
+</html>

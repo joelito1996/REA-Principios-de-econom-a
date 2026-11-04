@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vidas en la Historia Económica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<meta name="author" content="Joel Alexander Carvajal Solís">
+<meta name="description" content="Juego de actores basado en Breve historia económica del Ecuador de Alberto Acosta: cuatro actores recorren seis épocas, de la república hacendaria al neoextractivismo.">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "name": "Vidas en la historia económica del Ecuador",
+ "description": "Juego de actores basado en Breve historia económica del Ecuador de Alberto Acosta: cuatro actores recorren seis épocas, de la república hacendaria al neoextractivismo.",
+ "author": {
+  "@type": "Person",
+  "name": "Joel Alexander Carvajal Solís",
+  "affiliation": {
+   "@type": "CollegeOrUniversity",
+   "name": "Universidad Técnica de Ambato"
+  }
+ },
+ "inLanguage": "es",
+ "educationalLevel": "Educación superior, nivelación",
+ "learningResourceType": "Simulación interactiva",
+ "isAccessibleForFree": true,
+ "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+ "version": "1.0",
+ "dateCreated": "2026-10",
+ "keywords": [
+  "historia económica del Ecuador",
+  "Alberto Acosta",
+  "extractivismo",
+  "cacao",
+  "banano",
+  "petróleo",
+  "dolarización",
+  "Buen Vivir",
+  "juego de rol"
+ ],
+ "teaches": "Principios de Economía"
+}
+</script>
+<style>
+:root{
+  --teal:#0E7C7B; --teal-d:#0A5B5A; --teal-l:#DDEFEE;
+  --amber:#E8A33D; --amber-d:#B9771A; --amber-l:#FBEFD9;
+  --coral:#E4675A; --coral-d:#B8463B; --coral-l:#FBE3E0;
+  --ink:#1E2A32; --ink-2:#4A5862; --line:#D5DEE2;
+  --paper:#F5F8F8; --card:#FFFFFF;
+  --ok:#2E8B57; --bad:#C0392B;
+  --display:"Bricolage Grotesque", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", system-ui, sans-serif;
+  --era:#0E7C7B;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:var(--display);line-height:1.12;margin:0 0 .4em}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.015em}
+h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700}
+h3{font-size:1.12rem;font-weight:700}
+p{margin:0 0 .8em}
+button{font:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.muted{color:var(--ink-2)}
+small{font-size:.88rem}
+
+/* Cinta de épocas */
+.ribbon{background:var(--ink);color:#fff}
+.ribbon .wrap{display:flex;align-items:center;gap:16px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.ribbon .brand{font-family:var(--display);font-weight:800;font-size:1.15rem;margin-right:auto}
+.eras{display:flex;gap:3px;flex:1 1 420px;min-width:0}
+.eras span{flex:1;height:30px;border-radius:4px;background:rgba(255,255,255,.12);font-size:.72rem;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;padding:0 4px}
+.eras span.past{background:rgba(255,255,255,.28);color:#fff}
+.eras span.now{background:var(--amber);color:var(--ink);font-weight:700}
+
+/* Pantallas */
+.screen{display:none;padding-top:28px;padding-bottom:64px}
+.screen.active{display:block}
+
+/* Inicio */
+.hero{max-width:68ch}
+.hero .lede{font-size:1.12rem;color:var(--ink-2)}
+.quote{border-left:4px solid var(--amber);padding:6px 0 6px 14px;margin:18px 0;color:var(--ink-2);font-style:italic;max-width:62ch}
+.actors{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:22px 0}
+.actor{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:16px;text-align:left;color:var(--ink);display:flex;flex-direction:column;gap:6px;position:relative}
+.actor:hover{border-color:var(--teal)}
+.actor .swatch{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;color:#fff;font-size:1.05rem}
+.actor strong{font-family:var(--display);font-size:1.12rem}
+.actor span{font-size:.93rem;color:var(--ink-2)}
+.actor .played{position:absolute;top:12px;right:12px;font-size:.78rem;background:var(--teal-l);color:var(--teal-d);border-radius:4px;padding:1px 7px}
+.howto{display:flex;flex-wrap:wrap;gap:10px}
+.howto div{flex:1 1 200px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:.95rem}
+.howto b{display:block;font-family:var(--display);color:var(--teal-d)}
+
+/* Juego */
+.game{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+.era-head{border-bottom:3px solid var(--era);padding-bottom:12px;margin-bottom:16px}
+.era-head .years{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,7vw,4rem);color:var(--era);line-height:1;letter-spacing:-.02em}
+.era-head .motor{font-size:.98rem;color:var(--ink-2)}
+.era-head h2{margin-top:6px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0}
+.panel.situ{border-left:6px solid var(--actor,#0E7C7B)}
+.panel h3{margin-bottom:6px}
+.choices{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.choice{text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:11px 14px;color:var(--ink)}
+.choice:hover:not(:disabled){border-color:var(--teal);background:#fff}
+.choice:disabled{cursor:default;opacity:.55}
+.choice.picked{opacity:1;border-color:var(--teal);background:var(--teal-l);font-weight:700}
+.result{display:none}
+.result.show{display:block}
+.delta{display:inline-flex;gap:8px;flex-wrap:wrap;margin:6px 0 8px}
+.delta span{font-size:.88rem;border-radius:4px;padding:1px 8px;font-weight:700}
+.delta .up{background:#E5F4EC;color:var(--ok)}
+.delta .down{background:#FBE7E5;color:var(--bad)}
+.delta .eq{background:var(--paper);color:var(--ink-2)}
+.shock{background:var(--ink);color:#fff;border-radius:12px;padding:16px 20px;margin:14px 0}
+.shock h3{color:var(--amber)}
+.acosta{background:var(--amber-l);border-radius:12px;padding:16px 20px;margin:14px 0}
+.acosta h3{color:#6b4510}
+.check .opts{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.cq{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+.cq p{font-weight:700;margin:0}
+.step{font-size:.85rem;color:var(--ink-2);margin-bottom:4px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:6px;padding:8px 12px;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:#E5F4EC}
+.opt.wrong{border-color:var(--bad);background:#FBE7E5}
+.fb{margin-top:10px;padding:10px 12px;border-radius:6px;font-size:.95rem;display:none}
+.fb.show{display:block}
+.fb.ok{background:#E5F4EC}.fb.no{background:#FBE7E5}
+.btn{border:none;border-radius:8px;padding:11px 18px;font-weight:700;background:var(--teal);color:#fff}
+.btn:hover{background:var(--teal-d)}
+.btn:disabled{background:#9DB7B6;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--teal-d);border:1.5px solid var(--teal)}
+.btn.ghost:hover{background:var(--teal-l)}
+.next{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;flex-wrap:wrap}
+
+/* Ficha lateral */
+aside.sheet{position:sticky;top:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.sheet .who{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.sheet .who strong{font-family:var(--display);font-size:1.05rem;line-height:1.2}
+.meter{margin:10px 0}
+.meter .lab{display:flex;justify-content:space-between;font-size:.92rem;font-weight:700}
+.meter .bar{height:10px;border-radius:5px;background:var(--paper);overflow:hidden;margin-top:4px}
+.meter .bar i{display:block;height:100%;border-radius:5px;transition:width .6s}
+.sheet .log{font-size:.85rem;color:var(--ink-2);margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.sheet .log ol{margin:6px 0 0;padding-left:18px}
+
+/* Final */
+.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.final-grid .panel{margin:0}
+.traj svg{width:100%;height:auto;display:block}
+.cert label{font-weight:700;font-size:.93rem;display:block;margin:10px 0 3px}
+.cert input,.cert textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit}
+.cert textarea{min-height:84px}
+.cert table{width:100%;border-collapse:collapse;margin:8px 0 12px;font-size:.95rem}
+.cert th,.cert td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top}
+.cert .n{text-align:right;white-space:nowrap}
+.debate{background:var(--teal-l);border-radius:12px;padding:16px 20px;margin:18px 0}
+.debate ul{margin:6px 0 0;padding-left:20px}
+.debate li{margin-bottom:6px}
+.copied{color:var(--ok);font-weight:700;align-self:center}
+.src{font-size:.85rem;color:var(--ink-2);margin-top:26px;border-top:1px solid var(--line);padding-top:10px}
+
+@media (max-width:860px){
+  .game{grid-template-columns:1fr}
+  aside.sheet{position:static;order:-1}
+  .sheet .log{display:none}
+  .final-grid{grid-template-columns:1fr}
+  .eras span{font-size:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{
+  .ribbon,.screen:not(#sc-final),.noprint{display:none!important}
+  #sc-final{display:block!important;padding:0}
+  body{background:#fff}
+  .panel{break-inside:avoid}
+}
+.rea-foot{border-top:1px solid var(--line);margin-top:8px;padding:18px 0 28px;font-size:.88rem;color:var(--ink-2)}
+.rea-foot .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+.rea-foot a{color:var(--teal-d)}
+.rea-foot .cc{display:inline-block;border:1.5px solid var(--ink-2);border-radius:4px;padding:0 6px;font-weight:700;color:var(--ink)}
+@media print{.rea-foot{display:block!important}}
+</style>
+</head>
+<body>
+
+<div class="ribbon">
+  <div class="wrap">
+    <div class="brand">Vidas en la historia económica del Ecuador</div>
+    <div class="eras" id="eras" aria-hidden="true"></div>
+  </div>
+</div>
+
+<!-- INICIO -->
+<section class="screen active wrap" id="sc-start">
+  <div class="hero">
+    <h1>Seis épocas, cuatro vidas, una pregunta</h1>
+    <p class="lede">¿Por qué un país tan rico en recursos naturales ha tenido a la mayoría de su gente en la pobreza? Alberto Acosta responde en <i>Breve historia económica del Ecuador</i> recorriendo los auges y las crisis del cacao, el banano y el petróleo. Aquí vivirás esa historia desde adentro.</p>
+  </div>
+  <div class="howto">
+    <div><b>Elige quién eres</b>Cada actor ve la misma historia desde un lugar distinto de la sociedad.</div>
+    <div><b>Decide en cada época</b>Tomas dos decisiones por época. Cambian tu bienestar y tu voz, pero también hay sucesos que no controlas.</div>
+    <div><b>Comprueba y compara</b>Responde 18 preguntas sobre el libro, juega con otro actor y descarga tu comprobante.</div>
+  </div>
+  <h2 style="margin-top:28px">¿Quién quieres ser?</h2>
+  <div class="actors" id="actors"></div>
+  <p class="muted"><small>Las familias son personajes inventados para el juego. Las épocas, cifras y procesos provienen del libro de Acosta (3.ª edición, 2012). Si recargas la página, tus partidas se borran.</small></p>
+</section>
+
+<!-- JUEGO -->
+<section class="screen wrap" id="sc-game">
+  <div class="game">
+    <div>
+      <div class="era-head">
+        <div class="years" id="g-years"></div>
+        <h2 id="g-title"></h2>
+        <div class="motor" id="g-motor"></div>
+      </div>
+      <p id="g-context"></p>
+
+      <div id="g-decs"></div>
+
+      <div class="result" id="g-after">
+        <div class="shock">
+          <h3>Mientras tanto, en el país</h3>
+          <p id="g-shock" style="margin-bottom:6px"></p>
+          <div class="delta" id="g-shockdelta"></div>
+        </div>
+        <div class="acosta">
+          <h3>La lectura de Acosta</h3>
+          <p id="g-acosta" style="margin:0"></p>
+        </div>
+        <div class="panel check">
+          <h3>Comprueba tu lectura</h3>
+          <p class="muted" style="margin:0"><small>Responde las tres preguntas para avanzar.</small></p>
+          <div id="g-checks"></div>
+        </div>
+        <div class="next"><button class="btn" id="g-next" disabled>Avanzar a la siguiente época</button></div>
+      </div>
+    </div>
+
+    <aside class="sheet" aria-label="Ficha del actor">
+      <div class="who"><div class="swatch" id="s-sw" style="width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:800"></div><strong id="s-name"></strong></div>
+      <div class="meter"><div class="lab"><span id="s-l1"></span><span id="s-v1"></span></div><div class="bar"><i id="s-b1" style="background:var(--teal)"></i></div></div>
+      <div class="meter"><div class="lab"><span id="s-l2"></span><span id="s-v2"></span></div><div class="bar"><i id="s-b2" style="background:var(--amber)"></i></div></div>
+      <div class="log"><b>Tus decisiones</b><ol id="s-log"></ol></div>
+    </aside>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="screen wrap" id="sc-final">
+  <h2 id="f-title"></h2>
+  <p class="muted" id="f-sub"></p>
+  <div class="final-grid">
+    <div class="panel traj"><h3>Tu trayectoria</h3><svg id="f-chart" viewBox="0 0 460 270" role="img" aria-label="Evolución de los dos indicadores del actor a lo largo de las épocas"></svg></div>
+    <div class="panel"><h3>Lo que muestra tu partida</h3><p id="f-read"></p><p class="muted" id="f-struct" style="margin:0"></p></div>
+  </div>
+
+  <div class="debate">
+    <h3>Para debatir: otras miradas</h3>
+    <p style="margin-bottom:4px">El libro de Acosta es una interpretación con postura propia, como él mismo advierte. Contrástala con otras lecturas:</p>
+    <ul>
+      <li>Economistas de orientación liberal atribuyen las crisis de deuda sobre todo al gasto público excesivo y a malas políticas internas; Acosta discute esa visión y subraya el papel de la banca internacional y del mercado mundial.</li>
+      <li>Para sus defensores, la dolarización trajo estabilidad de precios después de la hiperdevaluación de 1999; Acosta la ve como una pérdida de soberanía monetaria.</li>
+      <li>Los gobiernos de 2007 en adelante sostuvieron que los ingresos petroleros y mineros eran necesarios para reducir la pobreza; Acosta responde que ese neoextractivismo reproduce la dependencia y los daños ambientales.</li>
+    </ul>
+  </div>
+
+  <div class="panel cert">
+    <h3>Comprobante de la actividad</h3>
+    <p class="muted" style="margin:0"><small>Principios de Economía, Nivelación, Universidad Técnica de Ambato. Unidad 1: Breve historia socioeconómica del Ecuador.</small></p>
+    <label for="c-name">Nombre completo</label><input id="c-name" autocomplete="name">
+    <label for="c-par">Paralelo</label><input id="c-par">
+    <table><thead><tr><th>Actor</th><th>Indicadores al final</th><th class="n">Lectura acertada</th></tr></thead><tbody id="c-rows"></tbody></table>
+    <label for="c-r1">1. ¿Qué te pasó por tus decisiones y qué te pasó sin importar lo que eligieras?</label>
+    <textarea id="c-r1"></textarea>
+    <label for="c-r2">2. ¿Estás de acuerdo con Acosta en que el extractivismo explica buena parte del subdesarrollo del Ecuador? Argumenta con un ejemplo del juego.</label>
+    <textarea id="c-r2"></textarea>
+    <p style="margin-top:10px"><small class="muted" id="c-date"></small></p>
+    <div class="next noprint" style="justify-content:flex-start">
+      <button class="btn" id="c-print">Descargar como PDF</button>
+      <button class="btn ghost" id="c-copy">Copiar resumen</button>
+      <button class="btn ghost" id="c-again">Jugar con otro actor</button>
+      <span class="copied" id="c-copied" hidden>Copiado</span>
+    </div>
+  </div>
+  <p class="src">Fuente: Acosta, Alberto. <i>Breve historia económica del Ecuador</i>. Quito: Corporación Editora Nacional, 3.ª ed., 2012. Los textos del juego son paráfrasis y síntesis didácticas, no citas del libro.</p>
+</section>
+
+<footer class="rea-foot"><div class="wrap">
+  <span class="cc">CC BY-SA 4.0</span>
+  <span>Recurso educativo abierto de <b>Joel Alexander Carvajal Solís</b>, Universidad Técnica de Ambato, 2026. Versión 1.0.</span>
+  <span>Puedes copiarlo y adaptarlo citando al autor y compartiendo con la misma <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">licencia</a>.</span>
+  <span>Contenidos basados en Acosta, A. (2012), Breve historia económica del Ecuador; textos parafraseados. Diseñado y programado con asistencia de inteligencia artificial (Claude, Anthropic).</span>
+</div></footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ===================== DATOS ===================== */
+const ERAS=[
+ {years:"1830–1880",short:"República",title:"Una república con herencia colonial",motor:"Motor de la economía: la hacienda serrana y el primer cacao de la Costa",color:"#6B7F3A",
+  context:"El Ecuador nace en 1830 sin romper con la Colonia: la mayoría vive en la Sierra, atada a las haciendas; la esclavitud dura hasta 1851; el Estado es débil y vive del tributo indígena, los diezmos y las aduanas. Además hereda una parte de la deuda de las guerras de independencia.",
+  acosta:"Para Acosta, la independencia cambió quién mandaba, pero no cómo se producía. Los terratenientes criollos heredaron los privilegios coloniales y se consolidó una economía extractivista, orientada a vender materias primas al mercado mundial.",
+  check:{q:"¿Qué era el concertaje?",o:["Un contrato libre y temporal entre trabajador y patrón","Un sistema de deudas que ataba a familias indígenas a la hacienda, a veces de por vida","Un impuesto que pagaban los hacendados al Estado"],a:1,why:"Los anticipos se convertían en deudas imposibles de pagar que pasaban de padres a hijos. Fue suprimido oficialmente en 1918, aunque persistió en la práctica."}},
+ {years:"1880–1925",short:"Cacao",title:"La pepa de oro",motor:"Motor de la economía: el cacao, exportado sobre todo a Europa",color:"#8A5A2B",
+  context:"El Ecuador se vuelve uno de los mayores exportadores de cacao del mundo. Triunfa la Revolución Liberal (1895), se adopta el sucre, el ferrocarril llega a Quito en 1908. Pero las ganancias se concentran en unas pocas familias de exportadores, banqueros y comerciantes.",
+  acosta:"Acosta muestra que la bonanza cacaotera no diversificó la economía: las ganancias se fueron a ampliar el mismo monocultivo, a importar bienes de lujo y a cuentas en el exterior. Cuando llegaron las plagas y cayó el precio, el país entró en una crisis larguísima.",
+  check:{q:"Según Acosta, ¿por qué la riqueza del cacao no desarrolló al país?",o:["Porque el cacao ecuatoriano era de mala calidad","Porque las ganancias se concentraron y se usaron en más monocultivo, consumo importado y fuga de capitales","Porque el Estado expropió las plantaciones"],a:1,why:"El cacao era de gran calidad. El problema fue la forma de acumulación: sin encadenamientos productivos ni mercado interno, la bonanza dejó al país atado al precio de un solo producto."}},
+ {years:"1948–1965",short:"Banano",title:"El banano integra al país",motor:"Motor de la economía: el banano, con miles de fincas pequeñas y medianas",color:"#C9A227",
+  context:"Tras la crisis cacaotera y la Gran Depresión, el banano rescata la economía. Plagas en Centroamérica y la demanda de Estados Unidos y Europa abren el mercado. El Estado construye carreteras y puertos; miles de familias de la Sierra migran a la Costa.",
+  acosta:"Para Acosta, el banano tuvo efectos más amplios que el cacao: más productores medianos, más salarios y más integración nacional. Pero la exportación siguió concentrada en pocas empresas y el país volvió a depender de un producto y de un precio que no controlaba.",
+  check:{q:"¿En qué se diferenció el auge bananero del cacaotero?",o:["En que hubo muchas fincas pequeñas y medianas, más salarios y mayor integración del país","En que el banano lo producían solo empresas extranjeras","En que acabó con la dependencia de las exportaciones primarias"],a:0,why:"En 1964 había unas 3.000 propiedades bananeras de 64 hectáreas en promedio. Aun así, más de la mitad de la exportación estaba en manos de tres empresas y el país seguía siendo primario-exportador."}},
+ {years:"1972–1981",short:"Petróleo",title:"De pobretón bananero a nuevo rico petrolero",motor:"Motor de la economía: el petróleo amazónico, exportado desde agosto de 1972",color:"#2F3E46",
+  context:"Las exportaciones pasan de unos 190 millones de dólares en 1970 a 2.500 millones en 1981. Gobiernan dictaduras militares hasta 1979. Se impulsa la industria protegida y crecen el Estado y las ciudades. Los bancos internacionales, llenos de petrodólares, prestan con facilidad.",
+  acosta:"Acosta subraya que en plena bonanza la deuda externa creció casi 22 veces: de 261 millones en 1971 a 5.868 millones en 1981. El servicio de la deuda pasó de 15 a 71 de cada 100 dólares exportados. La riqueza del petróleo permitió postergar los cambios de fondo.",
+  check:{q:"¿Por qué el Ecuador se endeudó tanto justo cuando más dinero tenía?",o:["Porque el petróleo no generó ingresos","Por la abundancia de crédito internacional y la expectativa de precios altos del petróleo para siempre","Porque el FMI le prohibió usar los ingresos petroleros"],a:1,why:"Los bancos tenían petrodólares que colocar y ofrecían créditos sin mirar su destino. Se pedía prestado contando con precios futuros que nunca llegaron."}},
+ {years:"1982–2000",short:"Ajuste y crisis",title:"La larga noche neoliberal",motor:"Motor de la economía: petróleo y banano, ahora con deuda y ajustes del FMI",color:"#B8463B",
+  context:"Cae el precio del petróleo y estalla la crisis de la deuda. En 1983 el Estado asume las deudas privadas en dólares (la sucretización). En los noventa se liberaliza la banca. En 1999 llegan el feriado bancario, el congelamiento de depósitos y, en enero de 2000, la dolarización a 25.000 sucres por dólar.",
+  acosta:"Acosta describe esta etapa como un intento de modernizar el modelo primario-exportador con recetas neoliberales. Una y otra vez el Estado asumió las pérdidas de los grupos poderosos, mientras el costo del ajuste recayó sobre las mayorías.",
+  check:{q:"¿Qué fue la sucretización?",o:["El cambio del sucre por el dólar en el año 2000","La conversión de deudas externas privadas en dólares en deudas en sucres con el Banco Central, que asumió el pago en dólares","Un impuesto a la circulación de capitales"],a:1,why:"Desde 1983 el Estado asumió unos 1.500 millones de dólares de deuda privada en condiciones muy ventajosas para los deudores. Según el cálculo que cita Acosta, el subsidio pudo llegar a 4.400 millones."}},
+ {years:"2007–2012",short:"Neoextractivismo",title:"Neoextractivismo y Buen Vivir",motor:"Motor de la economía: petróleo con precios altos y un nuevo impulso a la minería",color:"#0E7C7B",
+  context:"Con precios altos del petróleo, el Estado recupera presencia, invierte en obras y servicios sociales y renegocia parte de la deuda en 2008. La Constitución de 2008 reconoce el Buen Vivir (sumak kawsay) y los derechos de la Naturaleza, mientras se abre la puerta a la minería a gran escala.",
+  acosta:"Acosta llama neoextractivismo a esta etapa: el Estado controla más la renta y la reparte mejor, pero el país sigue exportando materias primas y cargando con los daños sociales y ambientales. Propone el Buen Vivir como una alternativa al desarrollo, no como otra forma de desarrollo.",
+  check:{q:"Para Acosta, ¿qué cambió y qué no con el neoextractivismo?",o:["Cambió todo: el país dejó de depender de las materias primas","Hubo más control estatal y mejor reparto de la renta, pero se mantuvo la dependencia de exportar recursos naturales","No cambió nada: el Estado siguió siendo mínimo"],a:1,why:"Acosta reconoce mejoras para los sectores marginados gracias a la renta petrolera, pero sostiene que la lógica de acumulación siguió siendo extractivista."}}
+];
+
+const ACTORS={
+ exp:{name:"Los Moreira",tag:"Familia exportadora de Guayaquil",color:"#B9771A",ini:"M",desc:"Plantaciones, casa comercial y, con el tiempo, un banco. Están en la cima de la sociedad.",l1:"Bienestar",l2:"Poder e influencia",start:[70,70],
+  eras:[
+   {situ:"Tienen una plantación de cacao en Los Ríos y una casa comercial en Guayaquil que importa telas y vinos europeos. El gobierno, siempre corto de dinero, pide préstamos a comerciantes como ustedes.",q:"El gobierno les pide un préstamo para pagar al ejército. ¿Qué hacen?",
+    c:[{t:"Prestar con intereses altos, con las rentas de aduana como garantía",d:[8,10],r:"Ganan dos veces: intereses y control sobre los ingresos del fisco. Acosta muestra que la deuda interna fue una palanca de enriquecimiento de los comerciantes guayaquileños y volvió al Estado dependiente de ellos."},
+       {t:"Negarse e invertir en un taller textil",d:[-5,-4],r:"El mercado interno es pequeño y pobre, y las telas importadas entran por Guayaquil más baratas. Sin consumidores con capacidad de compra, diversificar era cuesta arriba."},
+       {t:"Comprar más tierras para sembrar cacao",d:[6,3],r:"Amplían el monocultivo. La ganancia viene de la fertilidad del suelo y de la mano de obra barata, no de mejorar la técnica: la renta de la Naturaleza."}],
+    shock:"1859: el país casi se desintegra en cuatro gobiernos. Desde 1860 García Moreno centraliza el Estado, duplica los ingresos fiscales y construye caminos, con mano dura.",sd:[2,2]},
+   {situ:"Ya son parte de los llamados gran cacao. El precio está alto y su familia es socia de un banco que emite billetes y presta al gobierno.",q:"¿En qué usan las ganancias de la bonanza, entre 1900 y 1914?",
+    c:[{t:"Más hectáreas de cacao, viajes a París y depósitos en Europa",d:[12,6],r:"Es lo que hicieron muchos grandes cacaoteros: ampliar el monocultivo, consumir lujos importados y sacar capitales. El país exportaba el mejor cacao e importaba chocolate."},
+       {t:"Fundar una fábrica de chocolate en Guayaquil",d:[-3,2],r:"Idea adelantada a su tiempo: la producción de chocolate fino ecuatoriano recién despegaría a inicios del siglo XXI. Sin mercado interno ni apoyo, el proyecto es frágil."},
+       {t:"Prestar al gobierno a cambio de influencia política",d:[8,14],r:"Es la hora de la bancocracia: el Banco Comercial y Agrícola llegó a influir en nombramientos de presidentes y ministros. Las emisiones sin respaldo tras 1914 protegen a los bancos, pero alimentan una inflación que pagan los demás."}],
+    shock:"Desde 1917 las plagas (monilla y escoba de bruja) destruyen las plantaciones y el precio del cacao cae de unos 27 a menos de 6 dólares el quintal entre 1920 y 1921. La Revolución Juliana de 1925 golpea el poder de la banca y en 1927 nace el Banco Central.",sd:[-15,-14]},
+   {situ:"La familia se reacomodó: ahora exporta banano, tiene un banco y una importadora. La fruta la compran a miles de pequeños y medianos productores de la Costa.",q:"En los sesenta el precio internacional del banano baja. ¿Qué hacen?",
+    c:[{t:"Pagar menos a los productores para mantener su margen",d:[5,4],r:"Así actuaron los grandes exportadores, según Acosta: los productores pequeños cargaban con las pérdidas cuando el mercado caía y no recibían su parte cuando los precios subían."},
+       {t:"Compartir las pérdidas y financiar mejoras de productividad de sus proveedores",d:[-4,2],r:"La productividad bananera ecuatoriana era muy baja frente a Centroamérica. Mejorarla era necesario, pero tus competidores no lo hacen y te ganan en precio."},
+       {t:"Diversificar hacia la industria protegida por el Estado",d:[6,6],r:"Con aranceles altos y facilidades para importar maquinaria, la industria sustitutiva da buenas ganancias. Las mismas familias se reparten entre exportación, banca, comercio e industria."}],
+    shock:"1964–1965: crisis bananera. Las transnacionales vuelven a Centroamérica con la variedad Cavendish y el banano ecuatoriano pierde mercado. La balanza comercial queda en déficit hasta 1971.",sd:[-4,0]},
+   {situ:"Llega el petróleo. Los bancos extranjeros ofrecen a empresas como la suya créditos baratos en dólares.",q:"¿Se endeudan en dólares para crecer?",
+    c:[{t:"Sí, mucho: el crédito es barato y la bonanza parece eterna",d:[10,5],r:"Su grupo se expande con dinero prestado. Muchas empresas privadas hicieron lo mismo; esa deuda tendrá un destino sorprendente en la siguiente época."},
+       {t:"Con moderación, usando sobre todo sus propias utilidades",d:[5,2],r:"Crecen menos, pero quedan menos expuestos si el dólar se encarece."},
+       {t:"No: mandan parte de las utilidades al exterior, por si acaso",d:[4,-2],r:"Protegen su patrimonio, pero sacan capital del país, una conducta que Acosta encuentra en cada bonanza desde el cacao."}],
+    shock:"1981–1982: cae el precio del petróleo, suben las tasas de interés internacionales y el conflicto fronterizo de 1981 consume las reservas. Se acaba el crédito fácil.",sd:[-6,-2]},
+   {situ:"Es 1983. Muchas empresas tienen deudas en dólares y el sucre se devalúa sin parar. El FMI y el Banco Mundial recomiendan que el Estado asuma esas deudas.",q:"El gobierno ofrece sucretizar su deuda: el Banco Central la paga en dólares y ustedes le devuelven en sucres, a tasa fija y largo plazo. ¿Aceptan?",
+    c:[{t:"Sí, por supuesto",d:[12,6],r:"La deuda privada se volvió pública. Luego se ampliaron plazos, se congeló la tasa de interés y el tipo de cambio, y la inflación licuó lo que debían. Acosta lo considera una de las mayores subvenciones de la historia republicana."},
+       {t:"No: pagan sus propias deudas en dólares",d:[-6,0],r:"Pagar en dólares con un sucre que se devalúa resultó carísimo. Casi nadie lo hizo."}],
+    shock:"1998–1999: quiebran los bancos. Feriado bancario, congelamiento de depósitos y un salvataje que cuesta cerca del 30% del PIB en 1999, pagado por toda la sociedad. Si su banco quiebra, pasa al Estado, aunque muchas familias banqueras ya tenían su patrimonio a buen recaudo.",sd:[-5,-8]},
+   {situ:"El petróleo está caro, el Estado cobra más impuestos e invierte mucho. La nueva Constitución habla del Buen Vivir.",q:"¿Cómo se ubican en esta etapa?",
+    c:[{t:"Invertir en negocios ligados a la obra pública y a la minería",d:[8,2],r:"Acosta sostiene que los grupos vinculados al extractivismo siguieron obteniendo grandes utilidades a pesar del discurso de cambio."},
+       {t:"Apostar por exportaciones con valor agregado, como el chocolate fino",d:[4,4],r:"Es una ruta para dejar de vender solo materia prima, la salida que Acosta echa de menos a lo largo de toda la historia."},
+       {t:"Oponerse al gobierno y mover capitales al exterior",d:[2,-4],r:"Su patrimonio queda a salvo, pero pierden espacio en un Estado que ahora tiene más peso propio."}],
+    shock:"2008: crisis financiera mundial. El Ecuador suspende el pago de parte de su deuda tras una auditoría y la recompra con descuento. Los precios altos del petróleo sostienen la economía hasta 2014.",sd:[0,0]}
+  ]},
+ camp:{name:"Los Chicaiza",tag:"Familia campesina indígena de Tungurahua",color:"#0E7C7B",ini:"C",desc:"Trabajan tierras ajenas cerca de Ambato. Empiezan sin tierra propia y sin voz en la política.",l1:"Bienestar",l2:"Voz y organización",start:[20,10],
+  eras:[
+   {situ:"Viven en una hacienda cerca de Ambato como conciertos: trabajan la tierra del patrón a cambio de una parcelita y de anticipos que se convierten en deudas que pasan de padres a hijos. Además pagan el tributo indígena.",q:"El mayordomo les ofrece un nuevo anticipo para la fiesta del pueblo. ¿Qué hacen?",
+    c:[{t:"Aceptar: no hay otra forma de cubrir la fiesta y la comida",d:[3,-3],r:"La deuda crece y los ata más. Eloy Alfaro llegaría a llamar a los conciertos esclavos disimulados."},
+       {t:"Rechazarlo y escapar a las plantaciones de cacao de la Costa",d:[2,1],r:"Muchos indígenas emigraron a la Costa atraídos por el cacao. Dejan la deuda atrás, pero encuentran otras formas de sobreexplotación."},
+       {t:"Organizarse con la comunidad para reclamar",d:[-5,6],r:"Los levantamientos indígenas de esos años fueron reprimidos con dureza. Aun así, la resistencia de las comunidades nunca desapareció."}],
+    shock:"1860–1875: García Moreno unifica el país bajo un régimen centralista y autoritario. Hay más caminos y escuelas, pero no cambia la condición de los indígenas en las haciendas.",sd:[0,0]},
+   {situ:"En 1905 el ferrocarril llega a Ambato. La Revolución Liberal promete liberar a los indígenas, aunque el concertaje recién se suprime en el papel en 1918.",q:"¿Qué hacen con la llegada del tren?",
+    c:[{t:"Vender frutas y granos en la estación y en nuevos mercados",d:[5,2],r:"Tungurahua fue de las provincias que antes se conectaron con la Costa. Pero el mismo tren trajo harinas y granos importados que compiten con la producción serrana."},
+       {t:"Migrar como peones a las plantaciones de cacao",d:[4,0],r:"Hay trabajo asalariado mientras dure el auge, en condiciones duras."},
+       {t:"Quedarse en la hacienda: en la práctica nada ha cambiado",d:[-2,-2],r:"Las reformas liberales no tocaron el poder de los terratenientes serranos; muchas quedaron en el papel."}],
+    shock:"Años veinte: con la crisis del cacao hay menos trabajo en la Costa y la pobreza crece. Los levantamientos indígenas en la Sierra son castigados severamente.",sd:[-4,0]},
+   {situ:"Siguen como huasipungueros. En 1964 la reforma agraria elimina el huasipungo y les entrega una pequeña parcela, casi siempre en tierras altas y pobres.",q:"Con su parcela propia, ¿qué hacen?",
+    c:[{t:"Quedarse y cultivarla, apoyados en la minga comunitaria",d:[4,5],r:"Dejan de depender del hacendado. Pero las mejores tierras quedaron en manos de haciendas que se pasaron a la ganadería lechera, que necesita poca mano de obra."},
+       {t:"Migrar a las bananeras de la Costa",d:[7,1],r:"Los salarios bananeros iniciales eran de los mejores del agro costeño. La Costa pasó de tener el 40,5% de la población en 1950 al 47,5% en 1962."},
+       {t:"Ir a Ambato a trabajar en construcción y comercio",d:[5,2],r:"Es la época de la urbanización acelerada: cada vez más ciudades medianas crecen con migrantes del campo."}],
+    shock:"1964–1965: la crisis bananera reduce el empleo en la Costa. Llegan los créditos del FMI y sus recetas de ajuste.",sd:[-2,0]},
+   {situ:"Con el petróleo crecen las ciudades y el Estado. Para abaratar la comida urbana, el gobierno controla los precios agrícolas. En 1973 hay una segunda reforma agraria.",q:"Los precios a los que venden su cosecha apenas cubren los costos. ¿Qué hacen?",
+    c:[{t:"Seguir sembrando y vender aunque ganen poco",d:[-4,0],r:"Acosta explica que el modelo industrializador transfirió excedentes del campo a la ciudad mediante precios agrícolas bajos."},
+       {t:"Mandar a los hijos a estudiar y trabajar en la ciudad",d:[5,3],r:"La educación y el empleo urbano abren caminos que sus padres no tuvieron, aunque el campo se queda sin jóvenes."},
+       {t:"Fortalecer la organización campesina e indígena",d:[2,6],r:"Las organizaciones crecen y años después, en el levantamiento del Inti Raymi de 1990, los indígenas empiezan a ser sujetos y no objetos de la política nacional."}],
+    shock:"1982: estalla la crisis de la deuda. Empiezan los ajustes: suben los combustibles y se recortan subsidios.",sd:[-2,0]},
+   {situ:"En 1999 el trabajo desaparece, el sucre se derrumba y los precios suben sin control. Un primo que vive en Murcia les cuenta que hay trabajo en el campo español.",q:"¿Qué decide la familia?",
+    c:[{t:"Que uno de los hijos emigre a España y envíe remesas",d:[8,-2],r:"Las remesas llegaron al 8% del PIB en 2000, más que las exportaciones de banano. Sostuvieron a miles de familias y a la propia dolarización, a costa de separar hogares."},
+       {t:"Quedarse y participar en los levantamientos contra las medidas",d:[-3,8],r:"Los levantamientos indígenas y populares de marzo y julio de 1999 obligaron al gobierno de Mahuad a retroceder en varias medidas."},
+       {t:"Quedarse y acogerse al bono para los más pobres",d:[1,-1],r:"El bono solidario era de 100 mil sucres al mes, menos de 20 dólares, mientras se eliminaban los subsidios al gas y la electricidad."}],
+    shock:"Enero de 2000: dolarización a 25.000 sucres por dólar. Lo que quedaba de ahorro en sucres pierde casi todo su valor y los precios siguen subiendo durante meses.",sd:[-5,0]},
+   {situ:"La Constitución de 2008 reconoce el Buen Vivir y los derechos de la Naturaleza. Hay más carreteras, escuelas y centros de salud. Al mismo tiempo avanzan las concesiones mineras.",q:"Se discute un proyecto minero cerca del páramo que da agua a su comunidad. ¿Qué postura toman?",
+    c:[{t:"Apoyarlo por el empleo y las obras que promete",d:[4,-2],r:"Puede traer ingresos a corto plazo. Acosta advierte que los daños sociales y ambientales casi nunca se contabilizan en estos proyectos."},
+       {t:"Oponerse para defender el agua",d:[-1,5],r:"Para Acosta, estas resistencias expresan el Buen Vivir: la vida en armonía con la Naturaleza por encima de la acumulación."},
+       {t:"Proponer alternativas comunitarias: agroecología, turismo, mingas",d:[2,4],r:"Es construir desde abajo otras formas de economía, que Acosta considera parte de la búsqueda de alternativas al desarrollo."}],
+    shock:"Con precios altos del petróleo, la pobreza baja y llegan más servicios públicos al campo. La estructura de la propiedad de la tierra, sin embargo, cambia muy poco.",sd:[4,0]}
+  ]},
+ est:{name:"El Ministerio de Hacienda",tag:"El Estado ecuatoriano",color:"#4A5862",ini:"E",desc:"Debes financiar al país con pocos ingresos, acreedores exigentes y grupos de poder que presionan.",l1:"Finanzas públicas",l2:"Legitimidad",start:[45,45],
+  eras:[
+   {situ:"En 1837 el Congreso ratificó que el Ecuador asuma el 21,5% de la deuda de la Gran Colombia, negociada sin delegados ecuatorianos. Tus ingresos vienen del tributo indígena, los diezmos, los estancos y las aduanas, y se van en el ejército y el clero.",q:"Los tenedores de bonos de Londres exigen que pagues. ¿Qué haces?",
+    c:[{t:"Pagar con tierras baldías de la Amazonía",d:[4,-4],r:"Es lo que se acordó en 1854 (convenio Espinel-Mocatta). La entrega de tierras provocó un conflicto con el Perú y el acuerdo se cayó."},
+       {t:"Declarar una moratoria",d:[6,2],r:"El Ecuador pasó décadas en moratoria. Acosta señala que la de 1869 ayudó a una notable recuperación al cortar una costosa sangría de recursos."},
+       {t:"Subir el tributo indígena para pagar",d:[5,-8],r:"Recaudas más, pero a costa de los más pobres. El tributo era la continuidad de la dominación colonial y provocaba levantamientos."}],
+    shock:"1859: el país se fragmenta en cuatro gobiernos (Quito, Guayaquil, Cuenca y Loja) mientras los países vecinos reclaman territorio. La república está al borde del abismo.",sd:[-2,-4]},
+   {situ:"Es 1895 y triunfa la Revolución Liberal. Eloy Alfaro quiere terminar el ferrocarril Guayaquil-Quito, pero el país está en moratoria y nadie le presta.",q:"¿Cómo financias el ferrocarril?",
+    c:[{t:"Recomprar la vieja deuda inglesa con descuento y emitir bonos para el tren",d:[2,8],r:"Es lo que hizo Alfaro en 1898. La obra fue cara y llena de tropiezos, pero en 1908 el tren llegó a Quito e integró la Sierra con la Costa."},
+       {t:"Pedir préstamos a los bancos de Guayaquil",d:[-3,-4],r:"Así crece la bancocracia: el gobierno queda en manos de sus acreedores privados, que terminan influyendo en la política."},
+       {t:"Postergar el ferrocarril hasta tener dinero",d:[3,-6],r:"Cuidas la caja, pero el país sigue desintegrado: la mula y los cargadores siguen siendo el transporte entre regiones."}],
+    shock:"Años veinte: cae el cacao, la inflación sube y el Estado depende de los bancos. Tras la Revolución Juliana, la Misión Kemmerer crea el Banco Central (1927), la Superintendencia de Bancos y la Contraloría.",sd:[-4,4]},
+   {situ:"Con el dinero del banano construiste carreteras y puertos y en 1954 creaste la Junta Nacional de Planificación. Pero en 1961 el banano y el café caen y faltan divisas.",q:"El FMI ofrece un crédito a cambio de ajustes y devaluación. ¿Qué haces?",
+    c:[{t:"Aceptar el crédito y sus condiciones",d:[5,-6],r:"Entre 1961 y 1972 el Ecuador firmó nueve créditos de este tipo. Acosta señala que la devaluación recomendada contribuyó a desestabilizar al gobierno de 1961."},
+       {t:"Impulsar una reforma agraria y una reforma tributaria",d:[2,4],r:"Llegaron con la Junta Militar: la reforma agraria de 1964 y una reforma que eliminó más de 1.200 impuestos locales dispersos."},
+       {t:"Emitir dinero para cubrir el déficit",d:[-3,-3],r:"Cubres el hueco hoy y lo pagan todos mañana con inflación."}],
+    shock:"1963–1966: gobierno militar. Se apuesta por la industrialización con protección arancelaria, mientras el Pacto Andino (1969) promete un mercado regional.",sd:[0,0]},
+   {situ:"Desde 1972 entra el dinero del petróleo y, desde 1973, su precio se multiplica. Los bancos internacionales te ofrecen todos los créditos que quieras.",q:"¿Qué haces con la bonanza?",
+    c:[{t:"Endeudarte para grandes obras y subsidios, sin cobrar impuesto a la renta",d:[8,8],r:"Todo parece posible. Un gobernante militar de la época llegó a jactarse de no cobrar impuesto a la renta. La deuda crecerá casi 22 veces en una década."},
+       {t:"Invertir en industria y cobrar más impuestos a los que más tienen",d:[3,2],r:"Es más lento y genera resistencias, pero no depende tanto del precio del petróleo."},
+       {t:"Ahorrar una parte por si cae el precio",d:[4,0],r:"Acosta lamenta que la bonanza no se aprovechara para cambios estructurales. Ahorrar no los produce por sí solo, pero amortigua la caída."}],
+    shock:"1982: el precio del petróleo cae y suben las tasas de interés. El servicio de la deuda ya se lleva 71 de cada 100 dólares exportados. Se pide prestado para pagar lo que se debe.",sd:[-14,-6]},
+   {situ:"Es 1983. Las empresas privadas no pueden pagar sus deudas en dólares. El FMI y el Banco Mundial recomiendan que el Estado sea el garante.",q:"¿Sucretizas la deuda privada?",
+    c:[{t:"Sí, el Estado asume las deudas privadas",d:[-10,-5],r:"El Estado asumió unos 1.500 millones de dólares sin analizar deudor por deudor. Acosta lo describe como el Estado convertido en taller de reparaciones de los grupos más poderosos."},
+       {t:"No: solo ayudar caso por caso a productores que lo justifiquen",d:[-2,3],r:"Acosta critica justamente que no se revisaron garantías, depósitos en el exterior ni el destino real de los fondos."}],
+    shock:"1999: crisis bancaria. El salvataje cuesta cerca del 30% del PIB, se congelan los depósitos y el dólar llega a 19.000 sucres. En enero de 2000 se dolariza la economía y el país pierde su moneda.",sd:[-10,-12]},
+   {situ:"Precios altos del petróleo. En 2008 una auditoría de la deuda lleva a suspender pagos y recomprar bonos con descuento. La Constitución te pide garantizar el Buen Vivir y los derechos de la Naturaleza.",q:"¿Cómo financias el gasto social y la obra pública?",
+    c:[{t:"Ampliar la frontera petrolera y abrir la megaminería",d:[8,4],r:"Es la opción que se tomó. Acosta la llama neoextractivismo: más renta para el Estado, pero la misma dependencia y nuevos conflictos con comunidades."},
+       {t:"Reforma tributaria progresiva y apoyo a la producción con valor agregado",d:[3,2],r:"Más lenta y con resistencias de los grupos de poder, pero apunta a salir de la dependencia primaria."},
+       {t:"Endeudarte con nuevos acreedores",d:[4,0],r:"Resuelve el presente, pero repite un patrón que Acosta llama la deuda eterna."}],
+    shock:"La pobreza baja y crece la inversión pública. Pero cuando el precio del petróleo cae en 2014, el país descubre otra vez cuánto depende de él.",sd:[0,0]}
+  ]},
+ trab:{name:"Los Vera",tag:"Familia trabajadora montubia de la Costa",color:"#E4675A",ini:"V",desc:"Campesinos y luego trabajadores del puerto, las bananeras y las fábricas. Viven de su trabajo.",l1:"Bienestar",l2:"Voz y organización",start:[30,15],
+  eras:[
+   {situ:"Cultivan una parcela en Los Ríos. Muchos vecinos trabajan como sembradores: plantan y cuidan árboles de cacao en tierras del hacendado hasta que producen, y entonces el patrón se queda con ellos.",q:"Un hacendado vecino reclama, con papeles nuevos, la tierra que su familia trabaja desde hace años. ¿Qué hacen?",
+    c:[{t:"Aceptar ser sembradores en su plantación",d:[2,-3],r:"Acosta, citando a Andrés Guerrero, explica que en el cacao hubo expropiación de campesinos, no su conversión en obreros asalariados."},
+       {t:"Reclamar ante las autoridades",d:[-4,1],r:"Sin dinero ni influencias, es muy difícil ganar. El despojo agrario fue la norma en la expansión cacaotera."},
+       {t:"Internarse en la montaña a abrir tierra nueva",d:[1,0],r:"Conservan cierta independencia por un tiempo, hasta que la frontera de las plantaciones vuelva a alcanzarlos."}],
+    shock:"1851: se decreta la manumisión de los esclavos, con indemnización a los dueños y no a las personas esclavizadas. La tensión por el control de la mano de obra atraviesa todo el siglo.",sd:[0,0]},
+   {situ:"Es 1922 y trabajan en el puerto de Guayaquil y en una piladora de cacao. Con la crisis cacaotera y la devaluación, el dólar pasó de 2,25 a más de 5 sucres y los salarios ya no alcanzan.",q:"Los trabajadores convocan una huelga general en noviembre. ¿Participan?",
+    c:[{t:"Sí, a la huelga",d:[-4,9],r:"La huelga terminó en la masacre del 15 de noviembre de 1922, considerada el bautismo de sangre de la clase obrera ecuatoriana. Pero abrió el camino a la Revolución Juliana y a la Caja de Pensiones (1928)."},
+       {t:"No, cuidan el empleo",d:[-1,-2],r:"Conservan el trabajo un tiempo más, aunque la crisis golpea a todos los trabajadores por igual."}],
+    shock:"La crisis del cacao trae desempleo y el regreso de formas precarias de trabajo, como la aparcería en el arroz. La pobreza crece en toda la Costa.",sd:[-4,0]},
+   {situ:"Llega el auge bananero. Las bananeras pagan buenos salarios y surgen pueblos nuevos como Quevedo y Santo Domingo. La familia logró ahorrar algo.",q:"¿Qué hacen con sus ahorros?",
+    c:[{t:"Comprar una pequeña finca y vender la fruta a los exportadores",d:[8,3],r:"En 1964 había unas 3.000 fincas bananeras de 64 hectáreas en promedio. Pero dependen del precio que fijen unos pocos exportadores."},
+       {t:"Seguir como jornaleros en una bananera grande",d:[5,1],r:"Los salarios bananeros iniciales eran de los mejores del agro costeño."},
+       {t:"Mudarse a Guayaquil a trabajar en una fábrica",d:[4,3],r:"La industria de Guayaquil crece y llega a superar a la de la Sierra."}],
+    shock:"1964–1965: crisis bananera. Los exportadores pagan menos por la caja y los pequeños productores cargan con las pérdidas.",sd:[-5,0]},
+   {situ:"Guayaquil crece con el petróleo. Hay industria protegida, empleo público y, desde 1970, el Instituto Ecuatoriano de Seguridad Social.",q:"Una fábrica les ofrece empleo con seguro social. ¿Lo toman o ponen un negocio propio?",
+    c:[{t:"El empleo formal con afiliación al seguro social",d:[6,4],r:"Ingresos estables, jubilación y un sindicato. Es la época de mayor empleo formal."},
+       {t:"Una tienda propia en el barrio",d:[5,1],r:"Ganan bien mientras dura la bonanza y la ciudad crece."}],
+    shock:"1982: crisis de la deuda. Comienzan los ajustes, sube la inflación y se pierde el poder de compra de los salarios.",sd:[-4,0]},
+   {situ:"Tienen sus ahorros en un banco de Guayaquil que paga intereses muy altos. En 1998 el fenómeno de El Niño golpea la Costa y circulan rumores de quiebras bancarias.",q:"¿Qué hacen con sus ahorros?",
+    c:[{t:"Dejarlos en el banco: pagan buenos intereses",d:[-12,-2],r:"El 15 de marzo de 1999 amanecieron congelados los depósitos. Recuperarlos tomó años y en sucres devaluados: una confiscación de hecho."},
+       {t:"Retirarlos y comprar dólares",d:[-2,0],r:"Te salvas en parte. Miles hicieron lo mismo, lo que aceleró la corrida y la dolarización espontánea."},
+       {t:"Retirarlos y pagar el viaje de un hijo a España",d:[3,-2],r:"Desde 1999 emigraron cientos de miles de ecuatorianos. Las remesas sostuvieron a sus familias."}],
+    shock:"Enero de 2000: dolarización a 25.000 sucres por dólar. Los salarios quedan bajísimos en dólares mientras los precios se ajustan hacia arriba.",sd:[-5,0]},
+   {situ:"Hay más inversión pública, se amplía el bono, crece la afiliación al seguro social y la universidad pública se vuelve gratuita con la Constitución de 2008.",q:"¿Cómo aprovechan la época?",
+    c:[{t:"Que los hijos entren a la universidad pública",d:[6,4],r:"Son la primera generación universitaria de la familia: una movilidad social que sus abuelos no imaginaron."},
+       {t:"Pedir un crédito para un emprendimiento",d:[4,2],r:"Hay más crédito público para pequeños negocios, aunque dependen de que la economía siga creciendo."},
+       {t:"Trabajar en una contratista de obra pública",d:[5,1],r:"Hay empleo mientras dure el gasto público financiado con petróleo."}],
+    shock:"Acosta reconoce que los sectores marginados mejoraron con el mejor reparto de la renta petrolera, aunque sin una redistribución real de la tierra y de la riqueza.",sd:[3,0]}
+  ]}
+};
+const ORDER=["exp","camp","est","trab"];
+/* ===== Segunda decisión por actor y época (first:true = va antes de la original) ===== */
+const D2={
+ exp:[
+  {situ:"Su casa comercial, como la Casa Luzárraga, tiene permiso para emitir billetes. No existe todavía un banco central: la moneda la emite la banca privada y el gobierno necesita circulante.",q:"¿Cuántos billetes deciden emitir?",
+   c:[{t:"Muchos, aunque no tengan respaldo suficiente en oro y plata",d:[6,4],r:"Ganan con los créditos que otorgan, pero el exceso de billetes deprecia la moneda. Así le pasó al Banco Particular de Guayaquil, que terminó cerrando."},
+      {t:"Solo los que puedan respaldar con metal",d:[2,3],r:"Su billete gana confianza en un país lleno de monedas falsas y de poco valor. Crecen más despacio, pero con más prestigio."}]},
+  {first:true,situ:"Entre 1884 y 1895 gobiernan los progresistas. El diezmo, un impuesto colonial sobre la producción agrícola, todavía da cerca del 40% de los ingresos fiscales y su cobro se remata a particulares.",q:"Se discute eliminar el diezmo y reemplazarlo por un impuesto de tres por mil sobre la propiedad. ¿Qué postura toman?",
+   c:[{t:"Apoyar su eliminación con fuerza",d:[6,4],r:"Los grandes exportadores lo consideraban una traba para competir. Su eliminación dio un fuerte impulso a la producción de cacao, aunque no incentivó el mercado interno."},
+      {t:"Oponerse: prefieren no tocar los acuerdos con la Iglesia y los terratenientes",d:[-2,-3],r:"Se quedan del lado perdedor. La fracción agroexportadora de la Costa estaba ganando la disputa por el poder."}]},
+  {situ:"En 1955 el Ecuador firma con Estados Unidos un convenio para comprar sus excedentes agrícolas, sobre todo trigo, en condiciones favorables. Su grupo tiene una importadora.",q:"¿Qué hacen con esta oportunidad?",
+   c:[{t:"Importar trigo y harina en grandes cantidades",d:[5,2],r:"Es un buen negocio. Acosta muestra que el país se volvió dependiente del trigo importado y abandonó su propia producción triguera, que no podía competir."},
+      {t:"Invertir en molinos que compren trigo de la Sierra",d:[-2,1],r:"Apuestan por la producción nacional, pero el trigo serrano es más caro que el importado y el negocio sufre."}]},
+  {situ:"Con el retorno a la democracia, en 1980 el salario mínimo se duplica, de 2.000 a 4.000 sucres. Su familia es parte de las cámaras empresariales de Guayaquil.",q:"¿Qué posición defienden en la cámara?",
+   c:[{t:"Oponerse al alza: sube los costos y frena la inversión",d:[2,3],r:"Acosta describe así la posición histórica de las cámaras: rechazo a los impuestos y a las conquistas laborales, aunque sin renunciar a pedir ayuda al Estado cuando conviene."},
+      {t:"Aceptarla: más salario es más demanda para sus productos",d:[-2,1],r:"Es el argumento de autores como Friedrich List, que Acosta rescata: sin un mercado interno con capacidad de compra no hay industria nacional sólida."}]},
+  {situ:"En 1994 una nueva ley liberaliza el sistema financiero. Su banco ahora puede prestar a las empresas del propio grupo y abrir una sucursal offshore en el exterior.",q:"¿Aprovechan las nuevas reglas?",
+   c:[{t:"Sí: créditos a nuestras empresas y depósitos en la sucursal offshore",d:[10,5],r:"Crecen rápido. Pero los créditos vinculados y la banca offshore, con controles cada vez más débiles, fueron la base de la crisis bancaria de 1999."},
+      {t:"No: mantienen una banca prudente y bien supervisada",d:[2,0],r:"Pierden mercado frente a bancos más agresivos, pero llegan a 1999 con menos riesgos acumulados."}]},
+  {situ:"En 2011 el gobierno anuncia que ampliará los monocultivos para producir biocombustibles en la península de Santa Elena, en unas 400.000 hectáreas.",q:"¿Invierten en plantaciones para biocombustibles?",
+   c:[{t:"Sí, es un negocio grande y con apoyo estatal",d:[6,2],r:"Acosta advierte que esas tierras no están vacías: hay comunidades que podrían ser desplazadas. Es extractivismo agrario con un nombre nuevo."},
+      {t:"No, prefieren negocios que no dependan de concentrar tierra",d:[0,1],r:"Dejan pasar una ganancia, pero evitan conflictos con las comunidades de la península."}]}
+ ],
+ camp:[
+  {situ:"Además del trabajo en la hacienda, el teniente político cobra el tributo indígena y el recaudador del diezmo se lleva una parte de su pequeña cosecha.",q:"¿Cómo pagan lo que les exigen?",
+   c:[{t:"Con más días de trabajo en la hacienda",d:[-3,-1],r:"La deuda con el patrón crece. El tributo indígena era la continuidad de la dominación colonial a través de los impuestos."},
+      {t:"Vendiendo parte de sus alimentos en el mercado de Ambato",d:[-1,1],r:"La Sierra abastecía de alimentos baratos al resto del país. Pagan, pero comen menos."},
+      {t:"Negarse junto con otras comunidades",d:[-4,4],r:"Los levantamientos contra el tributo fueron reprimidos con sangre, pero muestran la capacidad de resistencia indígena que Acosta destaca."}]},
+  {situ:"La Revolución Liberal impulsa la educación laica, pública y obligatoria. Abren una escuela fiscal a dos horas de camino de la comunidad.",q:"¿Mandan a los hijos a la escuela?",
+   c:[{t:"Sí, aunque falten brazos en la chacra",d:[-1,5],r:"Aprender a leer y escribir abre puertas que la hacienda mantenía cerradas. Es una de las grandes contribuciones del liberalismo."},
+      {t:"No, los necesitan para trabajar",d:[1,-1],r:"Ganan algo de producción hoy, pero la siguiente generación sigue sin herramientas para defenderse."}]},
+  {situ:"Desde 1955 llega trigo estadounidense barato por el convenio de excedentes agrícolas. El precio del trigo y la cebada que ustedes cultivan cae.",q:"¿Qué siembran ahora?",
+   c:[{t:"Papas y hortalizas para el mercado de Ambato",d:[3,0],r:"Se adaptan. Pero el país pierde su producción triguera y depende cada vez más del trigo importado."},
+      {t:"Siguen con el trigo, como sus padres",d:[-4,0],r:"No pueden competir con el trigo importado. Acosta muestra cómo esta ayuda alimentaria terminó siendo otro mecanismo de dependencia."}]},
+  {first:true,situ:"La Constitución de 1978 reconoce por primera vez el voto de las personas analfabetas. Muchos miembros de la comunidad nunca habían podido votar.",q:"¿Qué hacen en las elecciones de 1979?",
+   c:[{t:"Votar y organizarse para exigir tierra y escuelas",d:[0,6],r:"Es un avance democrático real. Acosta advierte, sin embargo, que el retorno a la democracia se diseñó desde las cúpulas, con poca participación popular."},
+      {t:"No votar: desconfían de los políticos",d:[0,-1],r:"Su voz sigue fuera del sistema político, justo cuando se abre un espacio nuevo."}]},
+  {first:true,situ:"En junio de 1990, en plenas fiestas del Inti Raymi, las organizaciones indígenas convocan un gran levantamiento por la tierra y el reconocimiento de sus derechos.",q:"¿Participan?",
+   c:[{t:"Sí, cierran las vías junto con su comunidad",d:[-2,10],r:"El levantamiento de 1990 marcó un antes y un después: los indígenas empezaron a ser sujetos y no objetos de la política nacional."},
+      {t:"No, temen represalias",d:[0,0],r:"Se protegen, pero el movimiento avanza sin ustedes."}]},
+  {situ:"Los sistemas comunales de riego agrupan al 86% de los usuarios, pero reciben apenas el 13% del caudal. Los grandes usuarios, menos del 1%, concentran el 67%. La Constitución de 2008 prohíbe privatizar el agua.",q:"¿Qué hace su junta de regantes?",
+   c:[{t:"Exigir con otras juntas una redistribución del agua",d:[1,5],r:"Acosta señala que el gobierno no dio señales de revertir esta concentración, pese al mandato constitucional. La presión organizada es la única vía que les queda."},
+      {t:"Comprar agua a la hacienda vecina",d:[-2,-1],r:"Resuelven la urgencia, pero pagan por un recurso que la Constitución considera un derecho."},
+      {t:"Presentar un trámite y esperar",d:[0,0],r:"El trámite se demora. La distribución desigual del agua sigue igual."}]}
+ ],
+ est:[
+  {situ:"Desde 1860 García Moreno gobierna con mano dura y quiere ordenar las finanzas. El cobro de muchos impuestos se remata a particulares, que se quedan con buena parte de lo recaudado.",q:"¿Cómo modernizas la recaudación?",
+   c:[{t:"Nuevo sistema de contabilidad y lucha contra la evasión",d:[8,2],r:"Así se hizo: en el segundo gobierno de García Moreno se duplicaron los ingresos fiscales y se financiaron caminos, escuelas y la Escuela Politécnica."},
+      {t:"Seguir rematando el cobro a particulares",d:[0,-3],r:"Los rematistas y recolectores forman un sistema complejo y corrupto, y el Estado sigue débil."}]},
+  {situ:"En 1914 empieza la Primera Guerra Mundial. El cacao no puede llegar a Europa y los bancos emisores no podrían cambiar sus billetes por oro si la gente corriera a pedirlo.",q:"¿Dictas la ley de inconvertibilidad, que suspende el canje de billetes por oro?",
+   c:[{t:"Sí, para evitar una corrida bancaria",d:[3,-4],r:"Es lo que se hizo. Acosta muestra que la ley salvó a bancos como el Comercial y Agrícola y abrió la puerta a emisiones sin respaldo y a la inflación."},
+      {t:"No: que cumplan los bancos, y que quiebre el que emitió de más",d:[-4,2],r:"Te enfrentas a la banca más poderosa del país, que además es tu principal prestamista. Una decisión valiente y arriesgada."}]},
+  {first:true,situ:"El gobierno de Galo Plaza (1948–1952), asesorado por la United Fruit, misiones estadounidenses y el FMI, decide apostar por el banano. La renta bananera empieza a llegar.",q:"¿En qué usas esos ingresos?",
+   c:[{t:"Carreteras y puertos que integren el país",d:[-2,6],r:"La primera carretera asfaltada (Latacunga-Quevedo-Manta) y nuevos puertos integraron regiones antes aisladas."},
+      {t:"Bajar impuestos a los exportadores",d:[-3,-2],r:"Los exportadores ganan más, pero el Estado pierde capacidad para invertir en el resto del país."},
+      {t:"Crear una flota bananera estatal",d:[-1,2],r:"La Flota Bananera nació en 1966 como empresa mixta. Desde 1980 se arrendó al mayor exportador, declaró pérdidas casi todos los años y se liquidó en 1985."}]},
+  {first:true,situ:"En 1972 se dicta la Ley de Hidrocarburos y se crea CEPE, la empresa petrolera estatal. Las transnacionales Texaco y Gulf controlan la extracción en la Amazonía.",q:"¿Qué política petrolera sigues?",
+   c:[{t:"Nacionalista: CEPE compra parte del consorcio y el país entra a la OPEP",d:[6,5],r:"En 1973 Ecuador entra a la OPEP y en 1974 CEPE compra el 25% del consorcio Texaco-Gulf. Las transnacionales presionan y en 1975 Estados Unidos aplica un bloqueo financiero a los países de la OPEP."},
+      {t:"Dejar la explotación en manos de las transnacionales",d:[2,-4],r:"Recuerda lo que pasó con la Anglo en Santa Elena: el mejor crudo se exportaba y al país se le vendían mezclas importadas."}]},
+  {situ:"En 1986 el precio del petróleo cae a menos de 9 dólares el barril y en marzo de 1987 un terremoto rompe el oleoducto: el país pasa casi medio año sin exportar crudo.",q:"Los bancos internacionales exigen sus pagos. ¿Qué haces?",
+   c:[{t:"Suspender el pago a la banca privada internacional",d:[4,2],r:"Fue lo que ocurrió en enero de 1987: se mantuvieron solo los pagos a organismos multilaterales y a otros gobiernos."},
+      {t:"Seguir pagando con un crédito a nombre de CEPE",d:[-4,-3],r:"Se hizo algo así en 1986. Acosta lo critica: se endeudó a la empresa estatal para sostener a los grupos financieros y luego se dijo que era ineficiente."}]},
+  {situ:"La Iniciativa Yasuní-ITT propone dejar bajo tierra 850 millones de barriles, cerca del 20% de las reservas, a cambio de una contribución internacional. Se evitarían unos 410 millones de toneladas de CO2 y se protegería a pueblos en aislamiento.",q:"Las contribuciones llegan lentamente. ¿Qué haces?",
+   c:[{t:"Mantener la iniciativa y buscar otras fuentes de ingreso",d:[-4,5],r:"Para Acosta es una propuesta revolucionaria: un primer paso hacia una economía pospetrolera. En agosto de 2013 el gobierno la dio por terminada; en 2023 una consulta popular votó por dejar ese crudo bajo tierra."},
+      {t:"Activar el plan B y explotar el crudo",d:[6,-2],r:"Obtienes ingresos, pero Acosta lo ve como la contradicción central de esos años: un discurso de Buen Vivir con más extractivismo."}]}
+ ],
+ trab:[
+  {situ:"La tierra que trabajan da cacao de primera. Un comerciante de Guayaquil les ofrece adelantos de dinero a cambio de venderle toda la cosecha a un precio fijado por él.",q:"¿Aceptan el trato?",
+   c:[{t:"Sí, necesitan el dinero ahora",d:[2,-2],r:"El intermediario se queda con buena parte de la ganancia. Acosta muestra cómo la renta del cacao se concentró en exportadores, comerciantes y banqueros."},
+      {t:"No, venderán por su cuenta aunque sea más difícil",d:[-1,1],r:"Ganan independencia, pero sin crédito ni transporte propio dependen igual de los comerciantes del puerto."}]},
+  {first:true,situ:"Trabajan en un ingenio azucarero. En 1906 el Congreso aprueba una ley que facilita importar azúcar más barata para abaratar los alimentos.",q:"Eloy Alfaro defiende proteger a la industria azucarera. ¿Qué apoyan ustedes?",
+   c:[{t:"La protección del azúcar nacional",d:[3,2],r:"Alfaro argumentó que, por ahorrar dos o tres centavos en cada libra de azúcar, se perderían cinco mil empleos y bajarían los jornales de todos. Propuso proteger a la industria y, a la vez, controlar los abusos de precios."},
+      {t:"La importación: el azúcar barato ayuda a su familia",d:[-2,0],r:"Como consumidores ahorran algo, pero como trabajadores arriesgan el empleo. Es el dilema entre libre comercio y protección que atraviesa toda la historia."}]},
+  {situ:"Con la crisis bananera, los grandes exportadores dejan de pagar el precio oficial por la caja de banano a los pequeños productores.",q:"¿Qué hacen?",
+   c:[{t:"Organizarse con otros productores para exigir el precio oficial",d:[1,6],r:"Los conflictos entre productores y exportadores dieron origen a un importante movimiento campesino en la Costa."},
+      {t:"Vender a lo que paguen",d:[-3,-1],r:"Los exportadores trasladan las pérdidas a los productores pequeños, como explica Acosta."}]},
+  {situ:"En 1975 las centrales sindicales forman el Frente Unitario de Trabajadores (FUT). En 1977 los trabajadores del ingenio AZTRA fueron reprimidos con decenas de muertos.",q:"¿Se afilian al sindicato de la fábrica?",
+   c:[{t:"Sí, pese al riesgo",d:[2,6],r:"La organización obrera logra conquistas: en 1979 se fija la jornada de 40 horas y en 1980 se duplica el salario mínimo."},
+      {t:"No, prefieren no meterse en problemas",d:[0,-1],r:"Se benefician de lo que otros consiguen, pero su voz no cuenta en las negociaciones."}]},
+  {first:true,situ:"En enero de 1994 la gasolina extra sube 71% por exigencia del FMI. Su hijo trabaja como taxista en Guayaquil.",q:"¿Qué hace la familia?",
+   c:[{t:"Sumarse a las protestas de transportistas y trabajadores",d:[-1,5],r:"Las protestas no siempre frenaron los ajustes, pero los taxistas y otros gremios llegarían a paralizar las ciudades en la crisis de 1999."},
+      {t:"Subir las tarifas y seguir trabajando",d:[1,0],r:"Trasladan el costo a los pasajeros. El ajuste lo terminan pagando los sectores medios y pobres."}]},
+  {situ:"Tienen una pequeña finca en Santa Elena. El gobierno anuncia que ampliará los monocultivos para biocombustibles en la península.",q:"Una empresa ofrece comprar su tierra. ¿Qué deciden?",
+   c:[{t:"Vender: el precio es bueno",d:[4,-3],r:"Reciben dinero hoy, pero pierden su medio de vida. Acosta advierte el riesgo de desposesión de las comunidades de la península."},
+      {t:"Asociarse con los vecinos para mantener cultivos diversos",d:[1,4],r:"Defienden la soberanía alimentaria y su territorio, una idea cercana al Buen Vivir."}]}
+ ]
+};
+const MORECHECKS=[
+ [{q:"¿Qué parte de la deuda de la Gran Colombia tuvo que asumir el Ecuador?",o:["El 21,5%","La mitad","Toda la deuda"],a:0,why:"El reparto se acordó en 1834 sin delegados ecuatorianos y el Congreso lo ratificó en 1837. Desde entonces, la deuda externa fue un escollo casi permanente."},
+  {q:"¿Cómo define Acosta el extractivismo?",o:["Cualquier actividad agrícola","La explotación de grandes volúmenes de recursos naturales, poco o nada procesados, sobre todo para exportar","La industria que transforma materias primas"],a:1,why:"No se limita al petróleo o la minería: también hay extractivismo agrario, forestal y pesquero. Sus rasgos son la gran escala, el monocultivo y la dependencia del mercado mundial."}],
+ [{q:"¿Qué permitió la ley de inconvertibilidad de 1914?",o:["Que el sucre se cambiara por dólares","Que los bancos dejaran de canjear sus billetes por oro, lo que abrió paso a emisiones sin respaldo","Que el Estado nacionalizara los bancos"],a:1,why:"Supuestamente protegía las reservas de oro, pero salvó a bancos que no habrían podido responder ante una corrida y alimentó la inflación."},
+  {q:"¿Qué instituciones se crearon por recomendación de la Misión Kemmerer?",o:["El IESS y el Pacto Andino","El Banco Central, la Superintendencia de Bancos y la Contraloría","CEPE y la Junta de Planificación"],a:1,why:"Con el Banco Central (1927) el Estado asumió el monopolio de emitir moneda, que antes estaba en manos de la banca privada."}],
+ [{q:"¿Qué efecto tuvo el convenio de excedentes agrícolas firmado con Estados Unidos en 1955?",o:["El Ecuador se volvió exportador de trigo","Aumentó la dependencia del trigo importado y se abandonó la producción triguera nacional","Se prohibió importar alimentos"],a:1,why:"Lo que empezó como ayuda terminó como dependencia: el trigo nacional no podía competir con el importado."},
+  {q:"¿Qué es el crecimiento empobrecedor del que habla Acosta?",o:["Cuando cae el precio de una materia prima y los exportadores producen más, el precio cae aún más y ganan los países compradores","Cuando un país crece gracias a la industria","Cuando sube el precio del petróleo"],a:0,why:"Es la reacción típica, pero equivocada, de los productores de materias primas: responder a la caída de precios aumentando la producción."}],
+ [{q:"¿Qué fue CEPE?",o:["Un banco privado de Guayaquil","La empresa petrolera estatal creada en 1972, luego llamada Petroecuador","Un programa del FMI"],a:1,why:"CEPE nació con la política petrolera nacionalista de los años setenta y en 1989 se transformó en Petroecuador."},
+  {q:"¿Qué es la maldición de la abundancia?",o:["Tener demasiada población","La paradoja de países ricos en recursos naturales cuyas economías se distorsionan, concentran la riqueza y no logran desarrollarse","Producir más alimentos de los necesarios"],a:1,why:"Acosta pregunta, citando a Jürgen Schuldt, si somos pobres precisamente porque somos ricos en recursos naturales. Sostiene que la maldición puede superarse, pero no con más extractivismo."}],
+ [{q:"¿Cuánto costó, aproximadamente, el salvataje bancario solo en 1999?",o:["Cerca del 3% del PIB","Cerca del 30% del PIB","Nada: los banqueros pagaron sus deudas"],a:1,why:"Una de las cifras más altas del mundo para este tipo de rescates. Solo Filanbanco recibió más de 1.200 millones de dólares, más del doble de lo que el Estado destinó a salud en el mismo periodo."},
+  {q:"¿Qué papel cumplieron las remesas de los emigrantes después de la crisis?",o:["Ninguno: eran muy pequeñas","Sostuvieron a miles de familias y a la dolarización: en 2000 superaron el 8% del PIB, más que el banano","Financiaron la deuda externa directamente"],a:1,why:"Las remesas aliviaron la pobreza y trajeron dólares, aunque también fomentaron el consumo importado y presiones inflacionarias locales."}],
+ [{q:"¿Qué proponía la Iniciativa Yasuní-ITT?",o:["Explotar todo el petróleo del Yasuní cuanto antes","Dejar el crudo bajo tierra a cambio de una contribución internacional, protegiendo la biodiversidad y a pueblos en aislamiento","Vender el parque a una empresa privada"],a:1,why:"Para Acosta era un primer paso hacia una economía pospetrolera y una propuesta de justicia ecológica global."},
+  {q:"¿Por qué Acosta dice que el Buen Vivir es una alternativa al desarrollo y no una alternativa de desarrollo?",o:["Porque rechaza toda tecnología moderna","Porque cuestiona la idea misma de desarrollo como crecimiento sin fin y propone vivir en armonía con la Naturaleza","Porque es un programa de gobierno con metas de PIB"],a:1,why:"No busca otro camino hacia la misma meta, sino cambiar la meta. Acosta aclara que no niega los avances tecnológicos ni idealiza a las comunidades."}]
+];
+// Integrar a la estructura: cada época tendrá ds (decisiones) y checks (preguntas)
+ORDER.forEach(k=>ACTORS[k].eras.forEach((sc,i)=>{
+  const base={situ:sc.situ,q:sc.q,c:sc.c}, extra=D2[k][i];
+  sc.ds=extra.first?[extra,base]:[base,extra];
+}));
+ERAS.forEach((e,i)=>{e.checks=[e.check].concat(MORECHECKS[i]);});
+const TOTALQ=ERAS.reduce((s,e)=>s+e.checks.length,0);
+
+
+/* ===================== ESTADO ===================== */
+let cur=null; // partida actual
+const runs={}; // actorKey -> resumen
+
+const erasBox=document.getElementById("eras");
+ERAS.forEach((e,i)=>{const s=document.createElement("span");s.textContent=e.short;s.id="era-"+i;erasBox.appendChild(s);});
+function ribbon(i){ERAS.forEach((e,j)=>{const s=document.getElementById("era-"+j);s.className=j<i?"past":(j===i?"now":"");});}
+
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));window.scrollTo({top:0});}
+
+function renderActors(){
+  const box=document.getElementById("actors"); box.innerHTML="";
+  ORDER.forEach(k=>{
+    const a=ACTORS[k];
+    const b=document.createElement("button"); b.className="actor";
+    b.innerHTML='<div class="swatch" style="background:'+a.color+'">'+a.ini+'</div><strong>'+a.name+'</strong><span><b>'+a.tag+'.</b> '+a.desc+'</span>'+(runs[k]?'<span class="played">Jugado</span>':'');
+    b.addEventListener("click",()=>start(k));
+    box.appendChild(b);
+  });
+}
+renderActors();
+
+const clamp=v=>Math.max(0,Math.min(100,v));
+function start(k){
+  const a=ACTORS[k];
+  cur={k:k,era:0,v:[a.start[0],a.start[1]],hist:[[a.start[0],a.start[1]]],picks:[],checks:0};
+  document.getElementById("s-sw").style.background=a.color;
+  document.getElementById("s-sw").textContent=a.ini;
+  document.getElementById("s-name").innerHTML=a.name+'<br><small class="muted" style="font-family:var(--body);font-weight:400">'+a.tag+'</small>';
+  document.getElementById("s-l1").textContent=a.l1;
+  document.getElementById("s-l2").textContent=a.l2;
+  document.documentElement.style.setProperty("--actor",a.color);
+  document.getElementById("s-log").innerHTML="";
+  show("sc-game"); renderEra();
+}
+function meters(){
+  [0,1].forEach(i=>{document.getElementById("s-v"+(i+1)).textContent=Math.round(cur.v[i]);document.getElementById("s-b"+(i+1)).style.width=cur.v[i]+"%";});
+}
+function deltaHTML(d,a){
+  return d.map((x,i)=>{const lab=i?a.l2:a.l1;const cls=x>0?"up":(x<0?"down":"eq");return '<span class="'+cls+'">'+lab+" "+(x>0?"+":"")+x+"</span>";}).join("");
+}
+function renderEra(){
+  const e=ERAS[cur.era];
+  ribbon(cur.era);
+  document.documentElement.style.setProperty("--era",e.color);
+  document.getElementById("g-years").textContent=e.years;
+  document.getElementById("g-title").textContent=e.title;
+  document.getElementById("g-motor").textContent=e.motor;
+  document.getElementById("g-context").textContent=e.context;
+  document.getElementById("g-decs").innerHTML="";
+  document.getElementById("g-after").classList.remove("show");
+  const nx=document.getElementById("g-next"); nx.disabled=true;
+  nx.textContent=cur.era<ERAS.length-1?"Avanzar a la siguiente época":"Ver el final de tu historia";
+  renderDecision(0);
+  meters();
+}
+function renderDecision(j){
+  const a=ACTORS[cur.k], e=ERAS[cur.era], sc=a.eras[cur.era], dc=sc.ds[j];
+  const pn=document.createElement("div"); pn.className="panel situ";
+  pn.innerHTML='<div class="step">Decisión '+(j+1)+' de '+sc.ds.length+'</div><h3>Tu situación</h3><p></p><p><b></b></p><div class="choices"></div><div class="result" aria-live="polite"><div class="delta"></div><p style="margin:0"></p></div>';
+  pn.querySelectorAll("p")[0].textContent=dc.situ;
+  pn.querySelector("b").textContent=dc.q;
+  const box=pn.querySelector(".choices"), res=pn.querySelector(".result");
+  dc.c.forEach(ch=>{
+    const b=document.createElement("button"); b.className="choice"; b.textContent=ch.t;
+    b.addEventListener("click",()=>{
+      box.querySelectorAll(".choice").forEach(x=>x.disabled=true); b.classList.add("picked");
+      cur.v=[clamp(cur.v[0]+ch.d[0]),clamp(cur.v[1]+ch.d[1])];
+      res.querySelector(".delta").innerHTML=deltaHTML(ch.d,a);
+      res.querySelector("p").textContent=ch.r; res.classList.add("show");
+      cur.picks.push(ch.t);
+      const li=document.createElement("li"); li.textContent=e.short+": "+ch.t; document.getElementById("s-log").appendChild(li);
+      meters();
+      if(j<sc.ds.length-1){ const nb=document.createElement("div"); nb.className="next"; const bt=document.createElement("button"); bt.className="btn"; bt.textContent="Continuar"; bt.addEventListener("click",()=>{nb.remove();renderDecision(j+1);}); nb.appendChild(bt); pn.appendChild(nb); }
+      else showAfter();
+    });
+    box.appendChild(b);
+  });
+  document.getElementById("g-decs").appendChild(pn);
+  if(j>0){ pn.scrollIntoView({behavior:"smooth",block:"start"}); }
+}
+function showAfter(){
+  const a=ACTORS[cur.k], sc=a.eras[cur.era], e=ERAS[cur.era];
+  cur.v=[clamp(cur.v[0]+sc.sd[0]),clamp(cur.v[1]+sc.sd[1])];
+  cur.hist.push([cur.v[0],cur.v[1]]);
+  document.getElementById("g-shock").textContent=sc.shock;
+  document.getElementById("g-shockdelta").innerHTML=(sc.sd[0]||sc.sd[1])?deltaHTML(sc.sd,a):'<span class="eq">Sin efecto directo sobre tus indicadores</span>';
+  document.getElementById("g-acosta").textContent=e.acosta;
+  const wrap=document.getElementById("g-checks"); wrap.innerHTML=""; let done=0;
+  e.checks.forEach((q,n)=>{
+    const d=document.createElement("div"); d.className="cq";
+    d.innerHTML='<p></p><div class="opts"></div><div class="fb" aria-live="polite"></div>';
+    d.querySelector("p").textContent=(n+1)+". "+q.q;
+    const box=d.querySelector(".opts"), fb=d.querySelector(".fb");
+    q.o.map((_,i)=>i).sort(()=>Math.random()-.5).forEach(i=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=q.o[i]; b.dataset.i=i;
+      b.addEventListener("click",()=>{
+        const ok=i===q.a; if(ok) cur.checks++;
+        box.querySelectorAll("button").forEach(x=>{x.disabled=true;if(+x.dataset.i===q.a)x.classList.add("right");});
+        if(!ok)b.classList.add("wrong");
+        fb.className="fb show "+(ok?"ok":"no"); fb.innerHTML=(ok?"<b>Correcto.</b> ":"<b>No exactamente.</b> ")+q.why;
+        done++; if(done===e.checks.length) document.getElementById("g-next").disabled=false;
+      });
+      box.appendChild(b);
+    });
+    wrap.appendChild(d);
+  });
+  document.getElementById("g-after").classList.add("show");
+  setTimeout(meters,50);
+}
+document.getElementById("g-next").addEventListener("click",()=>{
+  if(cur.era<ERAS.length-1){cur.era++;renderEra();window.scrollTo({top:0});}
+  else finish();
+});
+
+/* ===================== FINAL ===================== */
+function finish(){
+  const a=ACTORS[cur.k];
+  runs[cur.k]={v:cur.v.slice(),hist:cur.hist.slice(),checks:cur.checks,picks:cur.picks.slice()};
+  ribbon(ERAS.length);
+  document.getElementById("f-title").textContent="El final de la historia de "+a.name;
+  document.getElementById("f-sub").textContent=a.tag+". Acertaste "+cur.checks+" de "+TOTALQ+" preguntas de lectura.";
+  drawTraj(a);
+  // lectura
+  const d1=Math.round(cur.v[0]-a.start[0]), d2=Math.round(cur.v[1]-a.start[1]);
+  let shockSum=[0,0]; a.eras.forEach(s=>{shockSum[0]+=s.sd[0];shockSum[1]+=s.sd[1];});
+  document.getElementById("f-read").innerHTML="Empezaste con "+a.l1.toLowerCase()+" en "+a.start[0]+" y terminaste en <b>"+Math.round(cur.v[0])+"</b> ("+(d1>=0?"+":"−")+Math.abs(d1)+"). Tu "+a.l2.toLowerCase()+" pasó de "+a.start[1]+" a <b>"+Math.round(cur.v[1])+"</b> ("+(d2>=0?"+":"−")+Math.abs(d2)+").";
+  document.getElementById("f-struct").textContent="Los sucesos que no dependieron de ti (plagas, caídas de precios, crisis de deuda, quiebras bancarias) sumaron "+(shockSum[0]>=0?"+":"−")+Math.abs(shockSum[0])+" puntos a tu "+a.l1.toLowerCase()+". Acosta insiste en esto: las personas hacen su historia, pero en condiciones que no eligieron, marcadas por la dependencia de exportar materias primas.";
+  buildCert(); renderActors(); show("sc-final");
+}
+function drawTraj(a){
+  const svg=document.getElementById("f-chart"), NS="http://www.w3.org/2000/svg"; svg.innerHTML="";
+  const E=(t,at,txt)=>{const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e;};
+  const x0=40,y0=220,w=400,h=190, sx=i=>x0+i*w/6, sy=v=>y0-v/100*h;
+  [0,25,50,75,100].forEach(v=>{E("line",{x1:x0,x2:x0+w,y1:sy(v),y2:sy(v),stroke:"#E3E9EC"});E("text",{x:x0-8,y:sy(v)+4,"text-anchor":"end","font-size":11,fill:"#4A5862"},v);});
+  ["Inicio"].concat(ERAS.map(e=>e.short)).forEach((l,i)=>{E("text",{x:sx(i),y:y0+18,"text-anchor":"middle","font-size":10,fill:"#4A5862"},l.length>12?l.slice(0,11)+"…":l);});
+  const H=cur.hist;
+  [[0,"#0E7C7B"],[1,"#B9771A"]].forEach(([k,c])=>{
+    E("path",{d:H.map((p,i)=>(i?"L":"M")+sx(i)+","+sy(p[k])).join(""),fill:"none",stroke:c,"stroke-width":3});
+    H.forEach((p,i)=>E("circle",{cx:sx(i),cy:sy(p[k]),r:4,fill:c}));
+  });
+  E("rect",{x:x0+4,y:8,width:12,height:4,fill:"#0E7C7B"});E("text",{x:x0+20,y:13,"font-size":11,fill:"#1E2A32"},a.l1);
+  E("rect",{x:x0+170,y:8,width:12,height:4,fill:"#B9771A"});E("text",{x:x0+186,y:13,"font-size":11,fill:"#1E2A32"},a.l2);
+}
+function buildCert(){
+  let rows="";
+  ORDER.forEach(k=>{const r=runs[k];if(!r)return;const a=ACTORS[k];
+    rows+="<tr><td>"+a.name+"<br><small class='muted'>"+a.tag+"</small></td><td>"+a.l1+": "+Math.round(r.v[0])+"<br>"+a.l2+": "+Math.round(r.v[1])+"</td><td class='n'>"+r.checks+" de "+TOTALQ+"</td></tr>";});
+  document.getElementById("c-rows").innerHTML=rows;
+  document.getElementById("c-date").textContent="Generado el "+new Date().toLocaleString("es-EC",{dateStyle:"long",timeStyle:"short"});
+}
+document.getElementById("c-again").addEventListener("click",()=>{ribbon(-1);show("sc-start");});
+document.getElementById("c-print").addEventListener("click",()=>{buildCert();window.print();});
+document.getElementById("c-copy").addEventListener("click",()=>{
+  buildCert();
+  let t="Vidas en la historia económica del Ecuador - Comprobante\nNombre: "+(document.getElementById("c-name").value||"(sin nombre)")+"\nParalelo: "+(document.getElementById("c-par").value||"-")+"\n";
+  ORDER.forEach(k=>{const r=runs[k];if(!r)return;const a=ACTORS[k];t+="\n"+a.name+" ("+a.tag+"): "+a.l1+" "+Math.round(r.v[0])+", "+a.l2+" "+Math.round(r.v[1])+", lectura "+r.checks+"/"+TOTALQ+"\nDecisiones: "+r.picks.join(" | ")+"\n";});
+  t+="\n1. "+document.getElementById("c-r1").value+"\n2. "+document.getElementById("c-r2").value+"\n"+document.getElementById("c-date").textContent;
+  const done=()=>{const m=document.getElementById("c-copied");m.hidden=false;setTimeout(()=>m.hidden=true,2000);};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){}ta.remove();};
+  try{navigator.clipboard.writeText(t).then(done,fb);}catch(e){fb();}
+});
+ribbon(-1);
+})();
+</script>
+</body>
+</html>
